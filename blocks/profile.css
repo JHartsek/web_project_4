@@ -1,0 +1,31 @@
+.profile {
+    margin: 40px auto 50px calc((100vw - 880px)/2);
+    display: flex;
+    color: #fff;
+}
+
+.profile__avatar {
+    padding-right: 30px;
+}
+
+.profile__info {
+    display: grid;
+    grid-template-areas: 
+    "name edit"
+    "descriptor descriptor";
+}
+
+.profile__info-name {
+    grid-area: name;
+    margin: 0; 
+    font-weight: 500;
+    font-size: 42px;
+    line-height: 1.15;
+    padding-right: 18px;
+}
+
+.profile__info-descriptor {
+    margin: 0;
+    grid-area: descriptor;
+
+}

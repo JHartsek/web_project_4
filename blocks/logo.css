@@ -1,0 +1,16 @@
+.logo {
+   margin: 45px auto 41px calc((100vw - 880px)/2);
+}
+
+@media screen and (max-width: 1024px) {
+    .logo {
+        margin-left: calc((100vw - 582px)/2);
+    }
+}
+
+@media screen and (max-width: 582px) {
+    .logo {
+        width: 126px;
+        margin: 28px auto 32px 27px;
+    }
+}

@@ -1,39 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head> 
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width initial-scale=1"/>
-        <meta name="auuthor" content="Julia Hartsek" />
-        <title> Around The U.S. </title>
-        <link href="./pages/index.css" rel="stylesheet"/> 
-    </head>
-    <body class="page"> 
-        <header class="header"> 
-            <img 
-                src="./images/logo.svg"
-                class="logo"
-                alt="Around The U.S logo"
-            /> 
-            <div class="border"> </div>
-        </header>
-        <main> 
-            <section class="profile"> 
-                <img
-                src="./images/avatar.png"
-                class="profile__avatar"
-                alt="Jacques Cousteau profile picture"
-                /> 
-                <article class="profile__info">
-                    <p class="profile__info-name"> Jacques Cousteau </p>
-                    <p class="profile__info-descriptor"> Explorer</p>
-                    <button class="profile__info-edit-button"> </button>
-                </article>
-                <button class="profile__add-button"> </button>
-            </section>
-        </main>
-        <footer class="footer"> 
-            <p> © 2021 Around The U.S. </p>
-        </footer>
-        <script> </script>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta name="auuthor" content="Julia Hartsek" />
+    <title>Around The U.S.</title>
+    <link href="./pages/index.css" rel="stylesheet" />
+  </head>
+  <body class="page">
+    <header class="header">
+      <img src="./images/logo.svg" class="logo" alt="Around The U.S logo" />
+      <div class="border"></div>
+    </header>
+    <main>
+      <section class="profile">
+        <img
+          src="./images/avatar.png"
+          class="profile__avatar"
+          alt="Jacques Cousteau profile picture"
+        />
+        <article class="profile__info">
+          <p class="profile__info-name">Jacques Cousteau</p>
+          <p class="profile__info-descriptor">Explorer</p>
+          <button class="profile__info-edit-button"> </button>
+        </article>
+        <button class="profile__add-button"> </button>
+      </section>
+    
+    <section class="popup__container"> 
+      <button class="popup__close-button"> </button>
+      <form class="profile-edit-form"> 
+        <h2 class="profile-edit-form__title"> Edit profile</h2>
+        <input 
+        id="name"
+        name="name"
+        class="profile-edit-form__input"
+        type="text"
+        placeholder="Name"
+        > 
+
+        <input 
+        id="about-me"
+        name="about-me"
+        class="profile-edit-form__input"
+        type="text"
+        placeholder="About Me"
+        > 
+        <button class="profile-edit-form__save-button" type="submit"> Save </button>
+      </form>
+    </section>
+    
+      <section class="posts-grid">
+        <article class="posts-grid__post post">
+          <img
+            src="./images/yosemite.jpg"
+            alt="river in Yosemite Valley"
+            class="post__image"
+          />
+          <div class="post__caption">
+            <p class="post__caption-text">Yosemite Valley</p>
+            <button class="post__caption-like"> </button>
+          </div>
+        </article>
+        <article class="posts-grid__post post">
+          <img
+            src="./images/lake-louise.jpg"
+            class="post__image"
+            alt="Lake Louise"
+          />
+          <div class="post__caption">
+            <p class="post__caption-text">Lake Louise</p>
+            <button class="post__caption-like"> </button>
+          </div>
+        </article>
+
+        <article class="posts-grid__post post">
+          <img
+            src="./images/bald-mountains.jpg"
+            class="post__image"
+            alt="Bald Mountains at sunrise"
+          />
+          <div class="post__caption">
+            <p class="post__caption-text">Bald Mountains</p>
+            <button class="post__caption-like"> </button>
+          </div>
+        </article>
+        <article class="posts-grid__post post">
+          <img
+            src="./images/latemar.jpg"
+            class="post__image"
+            alt="Latemar mountains in night sky"
+          />
+          <div class="post__caption">
+            <p class="post__caption-text">Latemar</p>
+            <button class="post__caption-like"> </button>
+          </div>
+        </article>
+        <article class="posts-grid__post post">
+          <img
+            src="./images/vanoise.jpg"
+            class="post__image"
+            alt="mountain along lake"
+          />
+          <div class="post__caption">
+            <p class="post__caption-text">Vanoise Nationational Park </p>
+            <button class="post__caption-like"> </button>
+          </div>
+        </article>
+
+        <article class="posts-grid__post post">
+          <img
+            src="./images/lago-di-brales.jpg"
+            class="post__image"
+            alt="boat dock along with mountain"
+          />
+          <div class="post__caption">
+            <p class="post__caption-text">Lago di Braies</p>
+            <button class="post__caption-like"> </button>
+          </div>
+        </article>
+      </section>
+    </main>
+    <footer class="footer">
+      <p class="footer__text"> © 2021 Around The U.S.</p>
+    </footer>
+    <script src="./scripts/script.js"></script>
+  </body>
 </html>

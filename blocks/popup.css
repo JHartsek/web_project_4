@@ -1,6 +1,15 @@
 .popup {
-    background-color: #000;
-    opacity: 0.5;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    width: 100vw;
+    height: 100vh;
+}
+
+.popup_opened {
+    display: block;
 }
 
 .popup__close-button { 
@@ -29,10 +38,11 @@
 .popup__close-button:hover {
     cursor: pointer;
     background-image: url('../images/close__hover.svg');
+    width: 40px;
+    height: 40px;
 }
 
 .popup__container {
-    display: none;
     position: fixed;
     left: calc((100vw - 430px)/2);
     top: calc((100vh - 330px)/2); 
@@ -46,6 +56,4 @@
     }
 }
 
-.popup__container-opened {
-    display: flex;
-}
+

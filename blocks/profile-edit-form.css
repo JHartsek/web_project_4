@@ -1,7 +1,6 @@
 .profile-edit-form {
     display: none;
     max-width: 430px;
-    height: 330px;
     border-radius: 10px;
     background-color: #fff;
     display: flex;
@@ -11,7 +10,6 @@
 @media screen and (max-width: 544px) {
     .profile-edit-form{
         max-width: 282px;
-        height: 322px;
     }
 }
 
@@ -70,6 +68,7 @@
         width: 238px; 
         height: 46px;
         margin: 10px 22px 25px 22px;
+        font-size: 14px;
     }
 }
 

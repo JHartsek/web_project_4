@@ -2,6 +2,7 @@
     padding-top: 67px;
     padding-bottom: 60px;
     padding-left: calc((100vw - 880px)/2);
+    color: #545454;
 }
 
 .footer__text {

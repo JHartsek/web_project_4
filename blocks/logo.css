@@ -1,5 +1,6 @@
 .logo {
-   margin: 45px auto 41px calc((100vw - 880px)/2);
+   margin: 45px auto 41px 0;
+   background-color: transparent;
 }
 
 @media screen and (max-width: 900px) {

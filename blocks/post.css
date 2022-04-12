@@ -7,6 +7,10 @@
     overflow: hidden;
 }
 
+.post__image {
+    max-height: 282px;
+}
+
 .post__caption {
     display: flex;
     justify-content: space-between;

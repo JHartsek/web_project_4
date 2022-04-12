@@ -35,6 +35,10 @@
 
 .profile__avatar {
     padding-right: 30px;
+    max-height: 120px;
+    max-width: 120px;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 @media screen and (max-width: 900px) {
@@ -48,7 +52,7 @@
     grid-area: edit;
     width: 24px;
     height: 24px;   
-    background-color: #000;
+    background-color: transparent;
     border: none;
     background-image: url('../images/edit-button.svg');
     background-position: center;
@@ -67,12 +71,13 @@
 .profile__info-edit-button:hover {
     color: #fff;
     opacity: 0.6;
+    cursor: pointer;
 }
 
 .profile__add-button {
     width: 150px;
     height: 50px;
-    background-color: #000;
+    background-color: transparent;
     border: solid 2px #fff;
     border-radius: 2px;
     background-image: url('../images/add-button.svg');
@@ -106,6 +111,9 @@
     font-size: 42px;
     line-height: 1.15;
     padding-right: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 @media screen and (max-width: 544px) {
@@ -120,10 +128,14 @@
     margin: 0;
     grid-area: descriptor;
     padding-top: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 @media screen and (max-width: 544px) {
     .profile__info-descriptor {
         padding-top: 14px;
+        font-size: 14px;
     }
 }

@@ -1,5 +1,6 @@
 .profile-edit-form {
     display: none;
+    grid-area: form;
     max-width: 430px;
     border-radius: 10px;
     background-color: #fff;

@@ -6,16 +6,15 @@
     background-color: rgba(0, 0, 0, 0.5); 
     width: 100vw;
     height: 100vh;
+    align-items: center;
 }
 
 .popup_opened {
-    display: block;
+    display: flex;
 }
 
 .popup__close-button { 
-    position: fixed; 
-    top: calc((100vh - 330px)/2 - 40px); 
-    right: calc((100vw - 430px)/2 - 60px);
+    grid-area: close;
     height: 40px;
     width: 40px;
     background-image: url('../images/close.svg');
@@ -28,31 +27,36 @@
 
 @media screen and (max-width: 544px) {
     .popup__close-button {
-        top: calc((100vh - 322px)/2 - 40px); 
-        right: calc((100vw - 282px)/2);
         height: 26px;
         width: 26px;
+        justify-self: right;
     }
 }
 
 .popup__close-button:hover {
     cursor: pointer;
-    background-image: url('../images/close__hover.svg');
-    width: 40px;
-    height: 40px;
+    color: #fff;
+    opacity: 0.6;
 }
 
 .popup__container {
-    position: fixed;
-    left: calc((100vw - 430px)/2);
-    top: calc((100vh - 330px)/2); 
+    margin: auto;
+    display: grid;
+    max-width: fit-content;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 
+    ". close"
+    "form .";
     z-index: 10;
 }
 
 @media screen and (max-width: 544px) {
     .popup__container {
-        left: calc((100vw - 282px)/2);
-        top: calc((100vh - 322px)/2); 
+        row-gap: 13px;
+        grid-template-areas: 
+        "close"
+        "form";
     }
 }
 

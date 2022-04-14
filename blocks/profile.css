@@ -3,17 +3,20 @@
     display: flex;
     color: #fff;
     align-items: center;
+    max-width: 880px;
 }
 
 @media screen and (max-width: 900px) {
     .profile {
         margin: 42px auto 50px;
         flex-direction: column;
+        max-width: 581px;
     }
 }
 
 @media screen and (max-width: 544px) {
     .profile {
+        max-width: 288px;
         margin-bottom: 36px;
     }
 }
@@ -23,7 +26,8 @@
     grid-template-areas: 
     "name edit"
     "descriptor descriptor";
-    padding-right: 165px;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr;
 }
 
 @media screen and (max-width: 900px) {
@@ -34,31 +38,47 @@
 }
 
 .profile__avatar {
-    padding-right: 30px;
-    max-height: 120px;
-    max-width: 120px;
+    display: flex;
+    flex-shrink: 0;
+    margin-right: 30px;
+    height: 120px;
+    width: 120px;
     border-radius: 50%;
     overflow: hidden;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile__avatar__image {
+    height: 120px;
+    width: 120px;
 }
 
 @media screen and (max-width: 900px) {
     .profile__avatar {
-        padding-right: 0;
-        padding-bottom: 30px;
+        margin-right: 0;
+        margin-bottom: 30px;
     }
 }
 
 .profile__info-edit-button {
     grid-area: edit;
+    flex-shrink: 0;
     width: 24px;
     height: 24px;   
+    margin-right: 18px;
     background-color: transparent;
     border: none;
     background-image: url('../images/edit-button.svg');
     background-position: center;
     background-size: cover;
-    padding: 0;
     align-self: center;
+}
+
+@media screen and (max-width: 900px) {
+    .profile__info-edit-button {
+        margin-right: 0;
+    }
 }
 
 @media screen and (max-width: 544px) {
@@ -75,6 +95,8 @@
 }
 
 .profile__add-button {
+    margin-left: auto;
+    flex-shrink: 0;
     width: 150px;
     height: 50px;
     background-color: transparent;
@@ -89,6 +111,7 @@
     .profile__add-button {
         width: 200px;
         margin-top: 36px;
+        margin-left: 0;
     }
 }
 

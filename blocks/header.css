@@ -1,6 +1,6 @@
 .header {
     margin-left: calc((100vw - 880px)/2);
-    border-bottom: solid 1px #545454;
+    border-bottom: solid 1px rgba(84,84,84, 0.7);
     max-width: 880px;
 }
 

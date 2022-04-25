@@ -1,6 +1,6 @@
 .posts-grid {
     margin-left: calc((100vw - 880px)/2);
-    display: grid; 
+    display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 17px;

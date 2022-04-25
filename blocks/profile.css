@@ -23,7 +23,7 @@
 
 .profile__info {
     display: grid;
-    grid-template-areas: 
+    grid-template-areas:
     "name edit"
     "descriptor descriptor";
     grid-template-rows: auto 1fr;
@@ -65,7 +65,7 @@
     grid-area: edit;
     flex-shrink: 0;
     width: 24px;
-    height: 24px;   
+    height: 24px;
     margin-right: 18px;
     background-color: transparent;
     border: none;
@@ -129,7 +129,7 @@
 
 .profile__info-name {
     grid-area: name;
-    margin: 0; 
+    margin: 0;
     font-weight: 500;
     font-size: 42px;
     line-height: 1.15;

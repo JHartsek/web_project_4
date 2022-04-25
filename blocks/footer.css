@@ -1,4 +1,4 @@
-.footer { 
+.footer {
     padding-top: 67px;
     padding-bottom: 60px;
     padding-left: calc((100vw - 880px)/2);
@@ -6,7 +6,7 @@
 }
 
 .footer__text {
-    margin: 0; 
+    margin: 0;
 }
 
 @media screen and (max-width: 900px) {

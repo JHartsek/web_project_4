@@ -28,101 +28,88 @@
         <button type="button" class="profile__add-button" aria-label="add-post"> </button>
       </section>
     
-    <section class="popup">
-      <div class="popup__container"> 
-        <button type="button" class="popup__close-button" aria-label="close-edit-profile-form"> </button>
-        <form class="profile-edit-form" name="profile-edit-form"> 
-        <h2 class="profile-edit-form__title"> Edit profile</h2>
-        <input 
-        id="name"
-        name="name"
-        class="profile-edit-form__input"
-        type="text"
-        placeholder="Name"
-        > 
+      <section id="edit-profile-popup" class="popup">
+        <div class="popup__container"> 
+          <button id="close-edit-button" type="button" class="popup__close-button" aria-label="close-popup"> </button>
+          <form class="profile-edit-form form" name="profile-edit-form"> 
+            <h2 class="form__title"> Edit profile</h2>
+            <input 
+            id="name"
+            name="name"
+            class="form__input"
+            type="text"
+            placeholder="Name"
+            > 
 
-        <input 
-        id="about-me"
-        name="about-me"
-        class="profile-edit-form__input"
-        type="text"
-        placeholder="About Me"
-        > 
-        <button type="submit" class="profile-edit-form__save-button"> Save </button>
-      </form>
-      </div> 
-    </section>
-    
-      <section class="posts-grid">
-        <article class="posts-grid__post post">
-          <img
-            src="./images/yosemite.jpg"
-            alt="river in Yosemite Valley"
-            class="post__image"
-          />
-          <div class="post__caption">
-            <h3 class="post__caption-text">Yosemite Valley</h3>
-            <button type="button" class="post__caption-like" aria-label="like-post"> </button>
-          </div>
-        </article>
-        <article class="posts-grid__post post">
-          <img
-            src="./images/lake-louise.jpg"
-            class="post__image"
-            alt="Lake Louise"
-          />
-          <div class="post__caption">
-            <h3 class="post__caption-text">Lake Louise</h3>
-            <button type="button" class="post__caption-like" aria-label="like-post"> </button>
-          </div>
-        </article>
-
-        <article class="posts-grid__post post">
-          <img
-            src="./images/bald-mountains.jpg"
-            class="post__image"
-            alt="Bald Mountains at sunrise"
-          />
-          <div class="post__caption">
-            <h3 class="post__caption-text">Bald Mountains</h3>
-            <button type="button" class="post__caption-like" aria-label="like-post"> </button>
-          </div>
-        </article>
-        <article class="posts-grid__post post">
-          <img
-            src="./images/latemar.jpg"
-            class="post__image"
-            alt="Latemar mountains in night sky"
-          />
-          <div class="post__caption">
-            <h3 class="post__caption-text">Latemar</h3>
-            <button type="button" class="post__caption-like" aria-label="like-post"> </button>
-          </div>
-        </article>
-        <article class="posts-grid__post post">
-          <img
-            src="./images/vanoise.jpg"
-            class="post__image"
-            alt="mountain along lake"
-          />
-          <div class="post__caption">
-            <h3 class="post__caption-text">Vanoise Nationational Park </h3>
-            <button type="button" class="post__caption-like" aria-label="like-post"> </button>
-          </div>
-        </article>
-
-        <article class="posts-grid__post post">
-          <img
-            src="./images/lago-di-brales.jpg"
-            class="post__image"
-            alt="boat dock along with mountain"
-          />
-          <div class="post__caption">
-            <h3 class="post__caption-text">Lago di Braies</h3>
-            <button type="button" class="post__caption-like" aria-label="like-post"> </button>
-          </div>
-        </article>
+            <input 
+            id="about-me"
+            name="about-me"
+            class="form__input"
+            type="text"
+            placeholder="About Me"
+            > 
+            <button type="submit" class="form__save-button"> Save </button>
+          </form>
+        </div> 
       </section>
+
+      <section id="add-post-popup" class="popup">
+        <div class="popup__container"> 
+          <button id="close-add-button" type="button" class="popup__close-button" aria-label="close-popup"> </button>
+          <form class="add-post-form form" name="add-post-form"> 
+            <h2 class="form__title"> New place </h2>
+            <input 
+            id="title"
+            name="title"
+            class="form__input"
+            type="text"
+            placeholder="Title"
+            > 
+
+            <input 
+            id="image-link"
+            name="image-link"
+            class="form__input"
+            type="text"
+            placeholder="Image link"
+            > 
+            <button id="create-post-button" type="submit" class="form__save-button"> Create </button>
+          </form>
+        </div> 
+      </section>
+
+      <section class="posts-grid">
+        <template class="template__post"> 
+          <article class="posts-grid__post post">
+            <div class="post__content"> 
+              <img
+              src=""
+              class="post__image"
+              alt=""
+            />
+            <button type="button" class="post__delete" aria-label="delete-post"> </button>
+            </div>
+            <div class="post__caption">
+              <h3 class="post__caption-text"> </h3>
+              <button type="button" class="post__caption-like" aria-label="like-post"> </button>
+            </div>
+          </article>
+        </template>
+      </section>
+      <section id="focus-image-popup" class="popup"> 
+        <div class="popup__container popup__container-image"> 
+          <button id="close-image-button" type="button" class="popup__close-button" aria-label="close-popup"> </button>
+          <figure class="popup__content"> 
+            <img 
+              src="https://code.s3.yandex.net/web-code/yosemite.jpg"
+              class="popup__image"
+              alt="yosemite"
+            /> 
+            <figcaption class="popup__image-caption"> </figcaption>
+          </figure>
+        </div>
+      </section>
+
     </main>
     <footer class="footer">
       <p class="footer__text"> © 2021 Around The U.S.</p>

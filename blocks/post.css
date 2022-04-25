@@ -7,8 +7,32 @@
     overflow: hidden;
 }
 
-.post__image {
+.post__content {
     max-height: 282px;
+}
+
+.post__image {
+    height: 282px;
+    width: 282px;
+}
+
+.post__delete {
+    position: relative;
+    bottom: 269px;
+    left: 249px;
+    background-image: url('../images/delete.svg');
+    width: 18px;
+    height: 19.3px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none;
+    background-color: transparent;
+}
+
+.post__delete:hover {
+    cursor: pointer;
+    opacity: 0.6;
 }
 
 .post__caption {
@@ -47,6 +71,6 @@
     background-image: url('../images/like-hover.svg');
 }
 
-.post__caption-like:active {
+.post__caption-like_active {
     background-image: url('../images/like-active.svg');
 }

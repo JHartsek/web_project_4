@@ -1,6 +1,6 @@
-.profile-edit-form {
+.form {
     display: none;
-    grid-area: form;
+    grid-area: content;
     max-width: 430px;
     border-radius: 10px;
     background-color: #fff;
@@ -9,12 +9,12 @@
 }
 
 @media screen and (max-width: 544px) {
-    .profile-edit-form{
+    .form{
         max-width: 282px;
     }
 }
 
-.profile-edit-form__title {
+.form__title {
     margin: 0;
     padding: 34px 64px 54px 36px;
     color: #000;
@@ -23,13 +23,13 @@
 }
 
 @media screen and (max-width: 544px) {
-    .profile-edit-form__title {
+    .form__title {
         padding: 25px 22px 76px 22px;
         font-size: 18px;
     }
 }
 
-.profile-edit-form__input {
+.form__input {
     width: 358px; 
     margin: 0 36px 30px 36px;
     border-top: none;
@@ -41,18 +41,18 @@
 }
 
 @media screen and (max-width: 544px) {
-    .profile-edit-form__input {
+    .form__input {
         width: 238px;
         margin: 0 22px 30px 22px;
         padding-bottom: 9px;
     }
 }
 
-.profile-edit-form__input:focus {
+.form__input:focus {
     outline: none;
 }
 
-.profile-edit-form__save-button {
+.form__save-button {
     width: 358px; 
     height: 50px;
     margin: 18px 36px 36px 36px;
@@ -65,15 +65,15 @@
 }
 
 @media screen and (max-width: 544px) {
-    .profile-edit-form__save-button {
+    .form__save-button {
         width: 238px; 
         height: 46px;
-        margin: 10px 22px 25px 22px;
+        margin: 16px 22px 25px 22px;
         font-size: 14px;
     }
 }
 
-.profile-edit-form__save-button:hover {
+.form__save-button:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.8);
 }

@@ -2,56 +2,83 @@ const postsGrid = document.querySelector('.posts-grid');
 const imagePopup = document.querySelector('#focus-image-popup');
 const closeImagePopupButton = document.querySelector('#close-image-button');
 
-// load initial cards 
-const initialCards = [
-  {
-    name: "Yosemite Valley",
-    link: "https://code.s3.yandex.net/web-code/yosemite.jpg"
-  },
-  {
-    name: "Lake Louise",
-    link: "https://code.s3.yandex.net/web-code/lake-louise.jpg"
-  },
-  {
-    name: "Bald Mountains",
-    link: "https://code.s3.yandex.net/web-code/bald-mountains.jpg"
-  },
-  {
-    name: "Latemar",
-    link: "https://code.s3.yandex.net/web-code/latemar.jpg"
-  },
-  {
-    name: "Vanoise National Park",
-    link: "https://code.s3.yandex.net/web-code/vanoise.jpg"
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://code.s3.yandex.net/web-code/lago.jpg"
-  }
-];
+const editProfileButton = document.querySelector('.profile__info-edit-button');
+const editProfileForm = document.querySelector('.profile-edit-form');
+const editProfilePopup = document.querySelector('#edit-profile-popup');
+const closeProfilePopupButton = document.querySelector('#close-edit-button');
 
-function loadInitialCards (card) {
-  const postTemplate = document.querySelector('.template__post').content; 
+const profileNameElement = document.querySelector('.profile__info-name'); 
+const profileAboutMeElement = document.querySelector('.profile__info-descriptor'); 
+const nameField = document.querySelector('#name');
+const aboutField = document.querySelector('#about-me');
+
+const addPostButton = document.querySelector('.profile__add-button');
+const addPostForm = document.querySelector('.add-post-form'); 
+const addPostPopup = document.querySelector('#add-post-popup');
+const closeAddPostButton = document.querySelector('#close-add-button');
+
+const titleField = document.querySelector('#title');
+const linkField = document.querySelector('#image-link');
+
+// create a post 
+function createPost (postInfo) {
+  const postTemplateElement = document.querySelector('.template__post');
+  const postTemplate = postTemplateElement.content;
   const postElement = postTemplate.querySelector('.post').cloneNode(true);
-  postElement.querySelector('.post__image').setAttribute('src', card.link);
-  postElement.querySelector('.post__image').setAttribute('alt', card.name);
-  postElement.querySelector('.post__caption-text').textContent = card.name;
-  const likeButton = postElement.querySelector('.post__caption-like');
-  likeButton.addEventListener('click', handleLike);
+  const postImageElement = postElement.querySelector('.post__image');
+  postImageElement.setAttribute('src', postInfo.link);
+  postImageElement.setAttribute('alt', postInfo.name);
+  const postCaptionTextElement = postElement.querySelector('.post__caption-text');
+  postCaptionTextElement.textContent = postInfo.name; 
 
   const deleteButton = postElement.querySelector('.post__delete');
   deleteButton.addEventListener('click', handleDelete);
 
   const image = postElement.querySelector('.post__image');
   image.addEventListener('click', handleFocusImage);
-  postsGrid.append(postElement);
+
+  const likeButton = postElement.querySelector('.post__caption-like');
+  likeButton.addEventListener('click', handleLike);
+  return postElement; 
 }
 
-function handlePageLoad () {
-  initialCards.forEach(loadInitialCards);
+
+// render post 
+function renderPost (postInfo) {
+  const postElement = createPost(postInfo);
+  postsGrid.prepend(postElement); 
 }
 
-window.addEventListener('load', handlePageLoad);
+
+// load initial cards 
+const initialCards = [
+  {
+    name: "Lago di Braies",
+    link: "https://code.s3.yandex.net/web-code/lago.jpg"
+  },
+  {
+    name: "Vanoise National Park",
+    link: "https://code.s3.yandex.net/web-code/vanoise.jpg"
+  },
+  {
+    name: "Latemar",
+    link: "https://code.s3.yandex.net/web-code/latemar.jpg"
+  },
+  {
+    name: "Bald Mountains",
+    link: "https://code.s3.yandex.net/web-code/bald-mountains.jpg"
+  },
+  {
+    name: "Lake Louise",
+    link: "https://code.s3.yandex.net/web-code/lake-louise.jpg"
+  },
+  {
+    name: "Yosemite Valley",
+    link: "https://code.s3.yandex.net/web-code/yosemite.jpg"
+  }
+];
+
+initialCards.forEach(renderPost);
 
 
 // like-button
@@ -68,9 +95,20 @@ function handleDelete (event) {
 }
 
 
-// opening the popup 
-function handleFocusImage (event) {
-  imagePopup.classList.add('popup_opened');
+// open a popup 
+function openPopup (popupElement) {
+  popupElement.classList.add('popup_opened');
+}
+
+
+// close a popup 
+function closePopup(popupElement) {
+  popupElement.classList.remove('popup_opened');
+}
+
+
+// opening the image popup 
+function setImagePopupAttributes (event) {
   const selectedImage = event.target; 
   const selectedImageSrc = selectedImage.getAttribute('src'); 
   const image = document.querySelector('.popup__image');
@@ -81,74 +119,63 @@ function handleFocusImage (event) {
   imageCaption.textContent = selectedImageAlt;
 }
 
+function handleFocusImage (event) {
+  openPopup(imagePopup);
+  setImagePopupAttributes(event); 
+}
+
 function handleCloseImagePopup () {
-  imagePopup.classList.remove('popup_opened');
+  closePopup(imagePopup); 
 }
 
 
 // edit profile 
-const editProfileButton = document.querySelector('.profile__info-edit-button');
-const editProfileForm = document.querySelector('.profile-edit-form');
-const editProfilePopup = document.querySelector('#edit-profile-popup');
-const closeProfilePopupButton = document.querySelector('#close-edit-button');
-
-const nameField = document.querySelector('#name');
-const aboutField = document.querySelector('#about-me');
-let profileName = document.querySelector('.profile__info-name').textContent; 
-let profileAboutMe = document.querySelector('.profile__info-descriptor').textContent; 
+function fillOutProfileForm () {
+  nameField.setAttribute('value', profileNameElement.textContent); 
+  aboutField.setAttribute('value', profileAboutMeElement.textContent);
+}
 
 function handleEditProfile () {
-  nameField.setAttribute('value', profileName); 
-  aboutField.setAttribute('value', profileAboutMe);
-  editProfilePopup.classList.add('popup_opened');
+  fillOutProfileForm();
+  openPopup(editProfilePopup); 
 }
 
 function handleCloseEditPopup () {
-  editProfilePopup.classList.remove('popup_opened');
+  closePopup(editProfilePopup);
+}
+
+function updateProfileDisplay () {
+  profileNameElement.textContent = nameField.value; 
+  profileAboutMeElement.textContent = aboutField.value; 
 }
 
 function handleSaveProfileChanges (event) {
   event.preventDefault();
-  document.querySelector('.profile__info-name').textContent = nameField.value; 
-  document.querySelector('.profile__info-descriptor').textContent = aboutField.value; 
+  updateProfileDisplay();
   handleCloseEditPopup(); 
 }
 
-
 // add post 
-const addPostButton = document.querySelector('.profile__add-button');
-const addPostForm = document.querySelector('.add-post-form'); 
-const addPostPopup = document.querySelector('#add-post-popup');
-const closeAddPostButton = document.querySelector('#close-add-button');
-
-const titleField = document.querySelector('#title');
-const linkField = document.querySelector('#image-link');
-
 function handleAddPost () {
-  addPostPopup.classList.add('popup_opened');
+  openPopup(addPostPopup); 
 }
 
 function handleCloseAddPopup () {
-  addPostPopup.classList.remove('popup_opened');
+  closePopup(addPostPopup); 
 }
 
 function handleCreatePost (event) {
   event.preventDefault();
-  const postTemplate = document.querySelector('.template__post').content; 
-  const postElement = postTemplate.querySelector('.post').cloneNode(true);
-  postElement.querySelector('.post__image').setAttribute('src', linkField.value);
-  postElement.querySelector('.post__image').setAttribute('alt', titleField.value);
-  postElement.querySelector('.post__caption-text').textContent = titleField.value; 
-
-  const deleteButton = postElement.querySelector('.post__delete');
-  deleteButton.addEventListener('click', handleDelete);
-
-  const likeButton = postElement.querySelector('.post__caption-like');
-  likeButton.addEventListener('click', handleLike);
-  postsGrid.prepend(postElement);
+  renderPost({
+    name: titleField.value,
+    link: linkField.value,
+  });
   handleCloseAddPopup();
+  addPostForm.reset();
 } 
+ 
 
+// set event listeners 
 addPostButton.addEventListener('click', handleAddPost); 
 closeAddPostButton.addEventListener('click', handleCloseAddPopup);
 addPostForm.addEventListener('submit', handleCreatePost);

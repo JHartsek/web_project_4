@@ -16,6 +16,10 @@
     width: 282px;
 }
 
+.post__image:hover {
+    cursor: pointer;
+}
+
 .post__delete {
     position: relative;
     bottom: 269px;
@@ -68,7 +72,7 @@
 
 .post__caption-like:hover {
     cursor: pointer;
-    background-image: url('../images/like-hover.svg');
+    opacity: 0.5;
 }
 
 .post__caption-like_active {

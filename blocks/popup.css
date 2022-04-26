@@ -10,14 +10,16 @@
     z-index: 20;
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0.25s, opacity 1s linear;
+    transition: visibility 0s 1s, opacity 1s linear;
+    pointer-events: none;
 }
 
 .popup_opened {
     display: flex;
     visibility: visible;
     opacity: 1;
-    transition: opacity 1s, visibility 1s 0.25s linear;
+    transition: visibility 0s, opacity 1s linear;
+    pointer-events: all;
 }
 
 .popup__close-button { 

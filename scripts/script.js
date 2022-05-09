@@ -20,6 +20,8 @@ const closeAddPostButton = document.querySelector('#close-add-button');
 const titleField = document.querySelector('#title');
 const linkField = document.querySelector('#image-link');
 
+const popups = [imagePopup, editProfilePopup, addPostPopup]
+
 // create a post 
 function createPost (postInfo) {
   const postTemplateElement = document.querySelector('.template__post');
@@ -106,6 +108,24 @@ function closePopup(popupElement) {
   popupElement.classList.remove('popup_opened');
 }
 
+ 
+// close popup with overlay click 
+function handleOverlayClick (evt) {
+  if (evt.target.classList.contains('popup_opened')) {
+    const popup = evt.target; 
+    closePopup(popup); 
+  }
+}
+
+// close a popup with esc key
+function handleEscape (evt) {
+  if (evt.key === "Escape") {
+    popups.forEach(function (popup) {
+      closePopup(popup); 
+    })
+  }
+}
+
 
 // opening the image popup 
 function setImagePopupAttributes (event) {
@@ -128,6 +148,9 @@ function handleCloseImagePopup () {
   closePopup(imagePopup); 
 }
 
+function handleCloseImagePopupEsc () {
+  closePopupEsc(imagePopup);
+}
 
 // edit profile 
 function fillOutProfileForm () {
@@ -173,13 +196,15 @@ function handleCreatePost (event) {
   handleCloseAddPopup();
   addPostForm.reset();
 } 
- 
+
 
 // set event listeners 
 addPostButton.addEventListener('click', handleAddPost); 
 closeAddPostButton.addEventListener('click', handleCloseAddPopup);
 addPostForm.addEventListener('submit', handleCreatePost);
 closeImagePopupButton.addEventListener('click', handleCloseImagePopup);
+document.addEventListener('keyup', handleEscape);
+document.addEventListener('click', handleOverlayClick);
 editProfileButton.addEventListener('click', handleEditProfile); 
 closeProfilePopupButton.addEventListener('click', handleCloseEditPopup);
 editProfileForm.addEventListener('submit', handleSaveProfileChanges);

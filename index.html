@@ -40,8 +40,10 @@
             type="text"
             placeholder="Name"
             required
+            minlength="2"
+            maxlength="40"
             > 
-
+            <span class="form__input-error name-input-error"> </span>
             <input 
             id="about-me"
             name="about-me"
@@ -49,7 +51,10 @@
             type="text"
             placeholder="About Me"
             required
+            minlength="2"
+            maxlength="200"
             > 
+            <span class="form__input-error about-me-input-error"> </span>
             <button type="submit" class="form__save-button"> Save </button>
           </form>
         </div> 
@@ -60,23 +65,27 @@
           <button id="close-add-button" type="button" class="popup__close-button" aria-label="close-popup"> </button>
           <form class="add-post-form form" name="add-post-form"> 
             <h2 class="form__title"> New place </h2>
-            <input 
-            id="title"
-            name="title"
-            class="form__input"
-            type="text"
-            placeholder="Title"
-            required
-            > 
+              <input 
+              id="title"
+              name="title"
+              class="form__input"
+              type="text"
+              placeholder="Title"
+              minlength="1"
+              maxlength="30"
+              required
+              > 
+              <span class="form__input-error title-input-error"> </span>
 
             <input 
             id="image-link"
             name="image-link"
             class="form__input"
-            type="text"
+            type="url"
             placeholder="Image link"
             required
             > 
+            <span class="form__input-error image-link-input-error"> </span>
             <button id="create-post-button" type="submit" class="form__save-button"> Create </button>
           </form>
         </div> 
@@ -119,5 +128,6 @@
       <p class="footer__text"> © 2021 Around The U.S.</p>
     </footer>
     <script src="./scripts/script.js"></script>
+    <script src="./scripts/validate.js"></script>
   </body>
 </html>

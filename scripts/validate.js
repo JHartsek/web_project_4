@@ -9,17 +9,17 @@ const classes = {
 
 const showInputError = (formElement, inputElement, errorMessage) => {
     const errorMessageElement = formElement.querySelector(`.${inputElement.id}-input-error`);
-    inputElement.classList.add('form__input_type_invalid');
-    errorMessageElement.textContent=errorMessage;
-    errorMessageElement.classList.add('form__input-error_active');
+    inputElement.classList.add(`${classes.inputErrorClass}`);
+    errorMessageElement.textContent = errorMessage;
+    errorMessageElement.classList.add(`${classes.errorClass}`);
 
 }
 
 const hideInputError = (formElement, inputElement) => {
     const errorMessageElement = formElement.querySelector(`.${inputElement.id}-input-error`);
-    inputElement.classList.remove('form__input_type_invalid'); 
-    errorMessageElement.textContent=" ";
-    errorMessageElement.classList.remove('form__input-error_active');
+    inputElement.classList.remove(`${classes.inputErrorClass}`); 
+    errorMessageElement.textContent = " ";
+    errorMessageElement.classList.remove(`${classes.errorClass}`);
 
 }
 
@@ -41,16 +41,18 @@ const hasInvalidInput = (inputList) =>{
 
 const toggleSubmitButton = (inputList, buttonElement) => {
     if (hasInvalidInput(inputList)) {
-        buttonElement.classList.add('form__save-button_disabled');
+        buttonElement.classList.add(`${classes.inactiveButtonClass}`);
+        buttonElement.setAttribute('disabled', true);
     }
     else {
-        buttonElement.classList.remove('form__save-button_disabled');
+        buttonElement.classList.remove(`${classes.inactiveButtonClass}`);
+        buttonElement.removeAttribute('disabled'); 
     }
 }
 
 const setEventListeners = formElement => {
-    const formInputs = Array.from(formElement.querySelectorAll('.form__input')); 
-    const buttonElement= formElement.querySelector('.form__save-button');
+    const formInputs = Array.from(formElement.querySelectorAll(`${classes.inputSelector}`)); 
+    const buttonElement = formElement.querySelector(`${classes.submitButtonSelector}`);
     toggleSubmitButton(formInputs, buttonElement);
     formInputs.forEach(function(inputElement) {
         inputElement.addEventListener('input', function() {

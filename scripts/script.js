@@ -16,6 +16,7 @@ const addPostButton = document.querySelector('.profile__add-button');
 const addPostForm = document.querySelector('.add-post-form'); 
 const addPostPopup = document.querySelector('#add-post-popup');
 const closeAddPostButton = document.querySelector('#close-add-button');
+const createPostButton = document.querySelector('.create-post-button'); 
 
 const titleField = document.querySelector('#title');
 const linkField = document.querySelector('#image-link');
@@ -91,8 +92,7 @@ function handleLike (event) {
 
 // delete button 
 function handleDelete (event) {
-  const postContent = event.target.parentElement;
-  const post = postContent.parentElement;
+  const post = event.target.closest('.post');
   post.remove();
 }
 
@@ -100,18 +100,22 @@ function handleDelete (event) {
 // open a popup 
 function openPopup (popupElement) {
   popupElement.classList.add('popup_opened');
+  document.addEventListener('keydown', handleEscape);
+  popupElement.addEventListener('mousedown', handleOverlayClick);
 }
 
 
 // close a popup 
 function closePopup(popupElement) {
   popupElement.classList.remove('popup_opened');
+  document.removeEventListener('keydown', handleEscape);
+  popupElement.removeEventListener('mousedown', handleOverlayClick);
 }
 
  
 // close popup with overlay click 
 function handleOverlayClick (evt) {
-  if (evt.target.classList.contains('popup_opened')) {
+  if (evt.target === evt.currentTarget) {
     const popup = evt.target; 
     closePopup(popup); 
   }
@@ -120,9 +124,8 @@ function handleOverlayClick (evt) {
 // close a popup with esc key
 function handleEscape (evt) {
   if (evt.key === "Escape") {
-    popups.forEach(function (popup) {
-      closePopup(popup); 
-    })
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
   }
 }
 
@@ -195,6 +198,8 @@ function handleCreatePost (event) {
   });
   handleCloseAddPopup();
   addPostForm.reset();
+  const formInputs = Array.from(addPostForm.querySelectorAll('.form__input'));
+  toggleSubmitButton(formInputs, createPostButton);
 } 
 
 
@@ -203,8 +208,6 @@ addPostButton.addEventListener('click', handleAddPost);
 closeAddPostButton.addEventListener('click', handleCloseAddPopup);
 addPostForm.addEventListener('submit', handleCreatePost);
 closeImagePopupButton.addEventListener('click', handleCloseImagePopup);
-document.addEventListener('keyup', handleEscape);
-document.addEventListener('click', handleOverlayClick);
 editProfileButton.addEventListener('click', handleEditProfile); 
 closeProfilePopupButton.addEventListener('click', handleCloseEditPopup);
 editProfileForm.addEventListener('submit', handleSaveProfileChanges);

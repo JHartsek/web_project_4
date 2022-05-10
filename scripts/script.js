@@ -16,7 +16,7 @@ const addPostButton = document.querySelector('.profile__add-button');
 const addPostForm = document.querySelector('.add-post-form'); 
 const addPostPopup = document.querySelector('#add-post-popup');
 const closeAddPostButton = document.querySelector('#close-add-button');
-const createPostButton = document.querySelector('.create-post-button'); 
+const createPostButton = document.querySelector('#create-post-button');
 
 const titleField = document.querySelector('#title');
 const linkField = document.querySelector('#image-link');

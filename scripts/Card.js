@@ -1,4 +1,4 @@
-import { imagePopup, openPopup } from "./utils.js";
+import { imagePopup, openPopup, postsGrid } from "./utils.js";
 
 export default class Card {
     constructor(data, templateSelector) {
@@ -14,49 +14,48 @@ export default class Card {
         return postElement;
     }
 
-    createPost () {
-        this.newPost = this._getTemplate();
-        const postImageElement = this.newPost.querySelector('.post__image');
+    _createPost () {
+        this._post = this._getTemplate();
+        const postImageElement = this._post.querySelector('.post__image');
         postImageElement.setAttribute('src', this._link);
         postImageElement.setAttribute('alt', this._name);
-        const postCaptionTextElement = this.newPost.querySelector('.post__caption-text');
+        const postCaptionTextElement = this._post.querySelector('.post__caption-text');
         postCaptionTextElement.textContent = this._name; 
         this._setEventListeners(); 
-        return this.newPost;    
-      }
+        return this._post;    
+    }
+
+    renderPost () {
+        this._element = this._createPost();
+        postsGrid.prepend(this._element); 
+    }
 
     _setEventListeners() {
-        const deleteButton = this.newPost.querySelector('.post__delete');
-        deleteButton.addEventListener('click', (event) => {
-            this._handleDelete(event); 
-        });
+        const deleteButton = this._post.querySelector('.post__delete');
+        deleteButton.addEventListener('click', this._handleDelete);
       
-        const image = this.newPost.querySelector('.post__image');
-        image.addEventListener('click', (event) => {
-            this._handleFocusImage(event);
-        });
+        const image = this._post.querySelector('.post__image');
+        image.addEventListener('click', this._handleFocusImage);
       
-        const likeButton = this.newPost.querySelector('.post__caption-like');
-        likeButton.addEventListener('click', (event) => {
-            this._handleLike(event);
-        });
+        const likeButton = this._post.querySelector('.post__caption-like');
+        likeButton.addEventListener('click', this._handleLike);
     }
- 
-    _handleDelete (event) {
-        const post = event.target.closest('.post');
-        post.remove();
+    
+    _handleDelete = () => {
+        this._post.remove();
+        this._post = null; 
     }
 
-    _handleLike (event) {
+    _handleLike = (event) => {
         event.target.classList.toggle('post__caption-like_active');
     }
 
-    _handleFocusImage (event) {
+    _handleFocusImage = (event) => {
         openPopup(imagePopup);
         this._setImagePopupAttributes(event); 
     }
 
-   _setImagePopupAttributes (event) {
+   _setImagePopupAttributes = (event) => {
         const selectedImage = event.target; 
         const selectedImageSrc = selectedImage.getAttribute('src'); 
         const image = document.querySelector('.popup__image');
@@ -65,5 +64,5 @@ export default class Card {
         image.setAttribute('alt', selectedImageAlt);
         const imageCaption = document.querySelector('.popup__image-caption');
         imageCaption.textContent = selectedImageAlt;
-      }
-}
+    }
+} 

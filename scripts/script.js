@@ -1,4 +1,4 @@
-import { openPopup, closePopup, handleCloseImagePopup, postsGrid} from './utils.js';
+import { openPopup, closePopup, imagePopup} from './utils.js';
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
@@ -62,16 +62,14 @@ const classes = {
 // load initial cards 
 initialCards.forEach((data) => {
   const card = new Card(data, '.template__post');
-  const postElement = card.createPost();
-  postsGrid.prepend(postElement); 
+  card.renderPost();
 });
 
-// validate forms 
-const formList = Array.from(document.querySelectorAll(`${classes.formSelector}`));
-formList.forEach((form) => {
-    const formValidation = new FormValidator(classes, form);
-    formValidation.enableValidation();
-})
+// vaidate forms 
+const addPostValidation = new FormValidator(classes, addPostForm);
+addPostValidation.enableValidation(); 
+const editProfileValidation = new FormValidator(classes, editProfileForm); 
+editProfileValidation.enableValidation();
 
 // edit profile 
 function fillOutProfileForm () {
@@ -82,6 +80,9 @@ function fillOutProfileForm () {
 function handleEditProfile () {
   fillOutProfileForm();
   openPopup(editProfilePopup); 
+  const editProfileValidation = new FormValidator(classes, editProfileForm); 
+  editProfileValidation.enableValidation();
+  editProfileValidation.toggleSubmitButton();
 }
 
 function handleCloseEditPopup () {
@@ -90,13 +91,13 @@ function handleCloseEditPopup () {
 
 function updateProfileDisplay () {
   profileNameElement.textContent = nameField.value; 
-  profileAboutMeElement.textContent = aboutField.value; 
+  profileAboutMeElement.textContent = aboutField.value;
 }
 
 function handleSaveProfileChanges (event) {
   event.preventDefault();
   updateProfileDisplay();
-  handleCloseEditPopup(); 
+  handleCloseEditPopup();
 }
 
 // add post 
@@ -115,18 +116,24 @@ function handleCreatePost (event) {
     link: linkField.value,
   };
   const card = new Card(data, '.template__post'); 
-  const postElement = card.createPost(); 
-  postsGrid.prepend(postElement);
+  const postElement = card.renderPost(); 
   handleCloseAddPopup();
   addPostForm.reset();
-  const formInputs = Array.from(addPostForm.querySelectorAll('.form__input'));
+  const addPostValidation = new FormValidator(classes, addPostForm);
+  addPostValidation.enableValidation(); 
+  addPostValidation.toggleSubmitButton();
 } 
+
+// close image popup 
+function handleCloseImagePopup () {
+  closePopup(imagePopup); 
+}
 
 // set event listeners 
 addPostButton.addEventListener('click', handleAddPost); 
 closeAddPostButton.addEventListener('click', handleCloseAddPopup);
 addPostForm.addEventListener('submit', handleCreatePost);
 closeImagePopupButton.addEventListener('click', handleCloseImagePopup);
-editProfileButton.addEventListener('click', handleEditProfile); 
+editProfileButton.addEventListener('click', handleEditProfile);
 closeProfilePopupButton.addEventListener('click', handleCloseEditPopup);
 editProfileForm.addEventListener('submit', handleSaveProfileChanges);

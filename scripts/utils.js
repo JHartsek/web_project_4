@@ -31,13 +31,4 @@ function handleEscape (evt) {
   }
 }
 
-function handleCloseImagePopup () {
-    closePopup(imagePopup); 
-}
-
-function handleCloseImagePopupEsc () {
-    closePopupEsc(imagePopup);
-}
-
-export { postsGrid, imagePopup, openPopup, closePopup, handleOverlayClick, handleEscape, 
-  handleCloseImagePopup, handleCloseImagePopupEsc };
+export { postsGrid, imagePopup, openPopup, closePopup, handleOverlayClick, handleEscape };

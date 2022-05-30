@@ -1,5 +1,7 @@
-const postsGrid = document.querySelector('.posts-grid');
-const imagePopup = document.querySelector('#focus-image-popup');
+import { openPopup, closePopup, handleCloseImagePopup, postsGrid} from './utils.js';
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
 const closeImagePopupButton = document.querySelector('#close-image-button');
 
 const editProfileButton = document.querySelector('.profile__info-edit-button');
@@ -21,39 +23,6 @@ const createPostButton = document.querySelector('#create-post-button');
 const titleField = document.querySelector('#title');
 const linkField = document.querySelector('#image-link');
 
-const popups = [imagePopup, editProfilePopup, addPostPopup]
-
-// create a post 
-function createPost (postInfo) {
-  const postTemplateElement = document.querySelector('.template__post');
-  const postTemplate = postTemplateElement.content;
-  const postElement = postTemplate.querySelector('.post').cloneNode(true);
-  const postImageElement = postElement.querySelector('.post__image');
-  postImageElement.setAttribute('src', postInfo.link);
-  postImageElement.setAttribute('alt', postInfo.name);
-  const postCaptionTextElement = postElement.querySelector('.post__caption-text');
-  postCaptionTextElement.textContent = postInfo.name; 
-
-  const deleteButton = postElement.querySelector('.post__delete');
-  deleteButton.addEventListener('click', handleDelete);
-
-  const image = postElement.querySelector('.post__image');
-  image.addEventListener('click', handleFocusImage);
-
-  const likeButton = postElement.querySelector('.post__caption-like');
-  likeButton.addEventListener('click', handleLike);
-  return postElement; 
-}
-
-
-// render post 
-function renderPost (postInfo) {
-  const postElement = createPost(postInfo);
-  postsGrid.prepend(postElement); 
-}
-
-
-// load initial cards 
 const initialCards = [
   {
     name: "Lago di Braies",
@@ -81,79 +50,28 @@ const initialCards = [
   }
 ];
 
-initialCards.forEach(renderPost);
+const classes = {
+  formSelector: ".form",
+  inputSelector: ".form__input",
+  submitButtonSelector: ".form__save-button",
+  inactiveButtonClass: "form__save-button_disabled",
+  inputErrorClass: "form__input_type_invalid",
+  errorClass: "form__input-error_active"
+};
 
+// load initial cards 
+initialCards.forEach((data) => {
+  const card = new Card(data, '.template__post');
+  const postElement = card.createPost();
+  postsGrid.prepend(postElement); 
+});
 
-// like-button
-function handleLike (event) {
-  event.target.classList.toggle('post__caption-like_active');
-}
-
-
-// delete button 
-function handleDelete (event) {
-  const post = event.target.closest('.post');
-  post.remove();
-}
-
-
-// open a popup 
-function openPopup (popupElement) {
-  popupElement.classList.add('popup_opened');
-  document.addEventListener('keydown', handleEscape);
-  popupElement.addEventListener('mousedown', handleOverlayClick);
-}
-
-
-// close a popup 
-function closePopup(popupElement) {
-  popupElement.classList.remove('popup_opened');
-  document.removeEventListener('keydown', handleEscape);
-  popupElement.removeEventListener('mousedown', handleOverlayClick);
-}
-
- 
-// close popup with overlay click 
-function handleOverlayClick (evt) {
-  if (evt.target === evt.currentTarget) {
-    const popup = evt.target; 
-    closePopup(popup); 
-  }
-}
-
-// close a popup with esc key
-function handleEscape (evt) {
-  if (evt.key === "Escape") {
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopup(openedPopup);
-  }
-}
-
-
-// opening the image popup 
-function setImagePopupAttributes (event) {
-  const selectedImage = event.target; 
-  const selectedImageSrc = selectedImage.getAttribute('src'); 
-  const image = document.querySelector('.popup__image');
-  image.setAttribute('src', selectedImageSrc);
-  const selectedImageAlt = selectedImage.getAttribute('alt');
-  image.setAttribute('alt', selectedImageAlt);
-  const imageCaption = document.querySelector('.popup__image-caption');
-  imageCaption.textContent = selectedImageAlt;
-}
-
-function handleFocusImage (event) {
-  openPopup(imagePopup);
-  setImagePopupAttributes(event); 
-}
-
-function handleCloseImagePopup () {
-  closePopup(imagePopup); 
-}
-
-function handleCloseImagePopupEsc () {
-  closePopupEsc(imagePopup);
-}
+// validate forms 
+const formList = Array.from(document.querySelectorAll(`${classes.formSelector}`));
+formList.forEach((form) => {
+    const formValidation = new FormValidator(classes, form);
+    formValidation.enableValidation();
+})
 
 // edit profile 
 function fillOutProfileForm () {
@@ -192,16 +110,17 @@ function handleCloseAddPopup () {
 
 function handleCreatePost (event) {
   event.preventDefault();
-  renderPost({
+  const data = {
     name: titleField.value,
     link: linkField.value,
-  });
+  };
+  const card = new Card(data, '.template__post'); 
+  const postElement = card.createPost(); 
+  postsGrid.prepend(postElement);
   handleCloseAddPopup();
   addPostForm.reset();
   const formInputs = Array.from(addPostForm.querySelectorAll('.form__input'));
-  toggleSubmitButton(formInputs, createPostButton);
 } 
-
 
 // set event listeners 
 addPostButton.addEventListener('click', handleAddPost); 

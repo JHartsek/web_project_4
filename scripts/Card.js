@@ -1,4 +1,4 @@
-import { imagePopup, openPopup, postsGrid } from "./utils.js";
+import { imagePopup, openPopup } from "./utils.js";
 
 export default class Card {
     constructor(data, templateSelector) {
@@ -14,7 +14,7 @@ export default class Card {
         return postElement;
     }
 
-    _createPost () {
+    createPost () {
         this._post = this._getTemplate();
         const postImageElement = this._post.querySelector('.post__image');
         postImageElement.setAttribute('src', this._link);
@@ -23,11 +23,6 @@ export default class Card {
         postCaptionTextElement.textContent = this._name; 
         this._setEventListeners(); 
         return this._post;    
-    }
-
-    renderPost () {
-        this._element = this._createPost();
-        postsGrid.prepend(this._element); 
     }
 
     _setEventListeners() {

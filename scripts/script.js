@@ -1,4 +1,4 @@
-import { openPopup, closePopup, imagePopup} from './utils.js';
+import { openPopup, closePopup, imagePopup, postsGrid } from './utils.js';
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
@@ -60,9 +60,14 @@ const classes = {
 };
 
 // load initial cards 
-initialCards.forEach((data) => {
+const renderPost = (data) => {
   const card = new Card(data, '.template__post');
-  card.renderPost();
+  const element = card.createPost();
+  postsGrid.prepend(element); 
+}
+
+initialCards.forEach((classes) => {
+  renderPost(classes); 
 });
 
 // vaidate forms 
@@ -80,8 +85,6 @@ function fillOutProfileForm () {
 function handleEditProfile () {
   fillOutProfileForm();
   openPopup(editProfilePopup); 
-  const editProfileValidation = new FormValidator(classes, editProfileForm); 
-  editProfileValidation.enableValidation();
   editProfileValidation.toggleSubmitButton();
 }
 
@@ -115,12 +118,9 @@ function handleCreatePost (event) {
     name: titleField.value,
     link: linkField.value,
   };
-  const card = new Card(data, '.template__post'); 
-  const postElement = card.renderPost(); 
+  renderPost(data);  
   handleCloseAddPopup();
   addPostForm.reset();
-  const addPostValidation = new FormValidator(classes, addPostForm);
-  addPostValidation.enableValidation(); 
   addPostValidation.toggleSubmitButton();
 } 
 

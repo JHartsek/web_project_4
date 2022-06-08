@@ -3,6 +3,7 @@ import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
 import Popup from "./Popup.js";
 import Section from "./Section.js";
+import PopupWithImage from "./PopupWithImage.js";
 
 const editProfileButton = document.querySelector(".profile__info-edit-button");
 const editProfileForm = document.querySelector(".profile-edit-form");
@@ -57,13 +58,18 @@ const classes = {
 };
 
 // load initial cards
-const cardSection = new Section({ items: initialCards, 
-  renderer: (data) => {
-    const card = new Card(data, ".template__post");
-    const element = card.createPost();
-    cardSection.addItem(element);
-  }}, '.posts-grid');
-  cardSection.renderElements();
+const cardSection = new Section(
+  {
+    items: initialCards,
+    renderer: (data) => {
+      const card = new Card(data, ".template__post");
+      const element = card.createPost();
+      cardSection.addItem(element);
+    },
+  },
+  ".posts-grid"
+);
+cardSection.renderElements();
 
 // vaidate forms
 const addPostValidation = new FormValidator(classes, addPostForm);
@@ -74,7 +80,7 @@ editProfileValidation.enableValidation();
 // create popup instances
 const editProfilePopup = new Popup("#edit-profile-popup");
 const addPostPopup = new Popup("#add-post-popup");
-const imagePopupInstance = new Popup("#focus-image-popup");
+const imagePopup = new PopupWithImage("#focus-image-popup");
 
 // edit profile
 function fillOutProfileForm() {
@@ -128,13 +134,13 @@ function handleCreatePost(event) {
 
 // close image popup
 function handleCloseImagePopup() {
-  imagePopupInstance.close();
+  imagePopup.close();
 }
 
 // set event listeners
 addPostButton.addEventListener("click", handleAddPost);
 addPostForm.addEventListener("submit", handleCreatePost);
-editProfileForm.addEventListener('submit', handleSaveProfileChanges);
+editProfileForm.addEventListener("submit", handleSaveProfileChanges);
 editProfileButton.addEventListener("click", handleEditProfile);
 
-export { imagePopupInstance };
+export { imagePopup };

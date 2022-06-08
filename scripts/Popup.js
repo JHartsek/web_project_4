@@ -5,9 +5,9 @@ export default class Popup {
         this._closeButton = this._popupElement.querySelector('.popup__close-button');
     }
 
-    open = () => {
+    open () {
         this._popupElement.classList.add('popup_opened');
-        this.setEventListeners()
+        this.setEventListeners();
     }
 
     close = () =>  {

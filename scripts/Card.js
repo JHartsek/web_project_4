@@ -1,4 +1,5 @@
-import { imagePopup, openPopup } from "./utils.js";
+import { imagePopup } from "./utils.js";
+import { imagePopupInstance } from "./script.js";
 
 export default class Card {
     constructor(data, templateSelector) {
@@ -46,7 +47,7 @@ export default class Card {
     }
 
     _handleFocusImage = (event) => {
-        openPopup(imagePopup);
+        imagePopupInstance.open(); 
         this._setImagePopupAttributes(event); 
     }
 

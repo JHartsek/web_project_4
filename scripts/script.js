@@ -2,6 +2,7 @@ import { postsGrid } from "./utils.js";
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
 import Popup from "./Popup.js";
+import Section from "./Section.js";
 
 const editProfileButton = document.querySelector(".profile__info-edit-button");
 const editProfileForm = document.querySelector(".profile-edit-form");
@@ -56,15 +57,13 @@ const classes = {
 };
 
 // load initial cards
-const renderPost = (data) => {
-  const card = new Card(data, ".template__post");
-  const element = card.createPost();
-  postsGrid.prepend(element);
-};
-
-initialCards.forEach((classes) => {
-  renderPost(classes);
-});
+const cardSection = new Section({ items: initialCards, 
+  renderer: (data) => {
+    const card = new Card(data, ".template__post");
+    const element = card.createPost();
+    cardSection.addItem(element);
+  }}, '.posts-grid');
+  cardSection.renderElements();
 
 // vaidate forms
 const addPostValidation = new FormValidator(classes, addPostForm);
@@ -119,7 +118,9 @@ function handleCreatePost(event) {
     name: titleField.value,
     link: linkField.value,
   };
-  renderPost(data);
+  const card = new Card(data, ".template__post");
+  const element = card.createPost();
+  cardSection.addItem(element);
   handleCloseAddPopup();
   addPostForm.reset();
   addPostValidation.toggleSubmitButton();

@@ -3,16 +3,10 @@ import FormValidator from "./FormValidator.js";
 import Section from "./Section.js";
 import PopupWithImage from "./PopupWithImage.js";
 import PopupWithForm from "./PopupWithFormClass.js";
+import userInfo from "./UserInfo.js";
 
 const editProfileButton = document.querySelector(".profile__info-edit-button");
 const editProfileForm = document.querySelector(".profile-edit-form");
-
-const profileNameElement = document.querySelector(".profile__info-name");
-const profileAboutMeElement = document.querySelector(
-  ".profile__info-descriptor"
-);
-const nameField = document.querySelector("#name");
-const aboutField = document.querySelector("#about-me");
 
 const addPostButton = document.querySelector(".profile__add-button");
 const addPostForm = document.querySelector(".add-post-form");
@@ -82,30 +76,19 @@ const addPostPopup = new PopupWithForm("#add-post-popup", handleCreatePost);
 const imagePopup = new PopupWithImage("#focus-image-popup");
 
 // edit profile
-function fillOutProfileForm() {
-  nameField.setAttribute("value", profileNameElement.textContent);
-  aboutField.setAttribute("value", profileAboutMeElement.textContent);
-}
+const user = new userInfo ({
+  nameFieldSelector: '#name', 
+  aboutFeildSelector: '#about-me'});
 
-function handleEditProfile() {
-  fillOutProfileForm();
+function handleEditProfile () {
   editProfilePopup.open();
+  user.setInitaluserInfo();
   editProfileValidation.toggleSubmitButton();
-}
-
-function handleCloseEditPopup() {
-  editProfilePopup.close();
-}
-
-function updateProfileDisplay() {
-  profileNameElement.textContent = nameField.value;
-  profileAboutMeElement.textContent = aboutField.value;
 }
 
 function handleSaveProfileChanges(event) {
   event.preventDefault();
-  updateProfileDisplay();
-  handleCloseEditPopup();
+  user.setUserInfo();
 }
 
 // add post

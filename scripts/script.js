@@ -1,9 +1,8 @@
-import { postsGrid } from "./utils.js";
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
-import Popup from "./Popup.js";
 import Section from "./Section.js";
 import PopupWithImage from "./PopupWithImage.js";
+import PopupWithForm from "./PopupWithFormClass.js";
 
 const editProfileButton = document.querySelector(".profile__info-edit-button");
 const editProfileForm = document.querySelector(".profile-edit-form");
@@ -78,8 +77,8 @@ const editProfileValidation = new FormValidator(classes, editProfileForm);
 editProfileValidation.enableValidation();
 
 // create popup instances
-const editProfilePopup = new Popup("#edit-profile-popup");
-const addPostPopup = new Popup("#add-post-popup");
+const editProfilePopup = new PopupWithForm("#edit-profile-popup", handleSaveProfileChanges);
+const addPostPopup = new PopupWithForm("#add-post-popup", handleCreatePost);
 const imagePopup = new PopupWithImage("#focus-image-popup");
 
 // edit profile
@@ -132,15 +131,8 @@ function handleCreatePost(event) {
   addPostValidation.toggleSubmitButton();
 }
 
-// close image popup
-function handleCloseImagePopup() {
-  imagePopup.close();
-}
-
 // set event listeners
 addPostButton.addEventListener("click", handleAddPost);
-addPostForm.addEventListener("submit", handleCreatePost);
-editProfileForm.addEventListener("submit", handleSaveProfileChanges);
 editProfileButton.addEventListener("click", handleEditProfile);
 
 export { imagePopup };

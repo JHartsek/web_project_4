@@ -50,12 +50,16 @@ const classes = {
   errorClass: "form__input-error_active",
 };
 
+
 // load initial cards
 const cardSection = new Section(
   {
     items: initialCards,
     renderer: (data) => {
-      const card = new Card(data, ".template__post");
+      const card = new Card(data, ".template__post", () => {
+        const imagePopup = new PopupWithImage("#focus-image-popup");
+        imagePopup.open();
+      });
       const element = card.createPost();
       cardSection.addItem(element);
     },
@@ -64,16 +68,18 @@ const cardSection = new Section(
 );
 cardSection.renderElements();
 
+
 // vaidate forms
 const addPostValidation = new FormValidator(classes, addPostForm);
 addPostValidation.enableValidation();
 const editProfileValidation = new FormValidator(classes, editProfileForm);
 editProfileValidation.enableValidation();
 
+
 // create popup instances
 const editProfilePopup = new PopupWithForm("#edit-profile-popup", handleSaveProfileChanges);
 const addPostPopup = new PopupWithForm("#add-post-popup", handleCreatePost);
-const imagePopup = new PopupWithImage("#focus-image-popup");
+
 
 // edit profile
 const user = new userInfo ({
@@ -89,15 +95,13 @@ function handleEditProfile () {
 function handleSaveProfileChanges(event) {
   event.preventDefault();
   user.setUserInfo();
+  editProfilePopup.close(); 
 }
+
 
 // add post
 function handleAddPost() {
   addPostPopup.open();
-}
-
-function handleCloseAddPopup() {
-  addPostPopup.close();
 }
 
 function handleCreatePost(event) {
@@ -106,10 +110,13 @@ function handleCreatePost(event) {
     name: titleField.value,
     link: linkField.value,
   };
-  const card = new Card(data, ".template__post");
+  const card = new Card(data, ".template__post", () => {
+    const imagePopup = new PopupWithImage("#focus-image-popup");
+    imagePopup.open();
+  });
   const element = card.createPost();
   cardSection.addItem(element);
-  handleCloseAddPopup();
+  addPostPopup.close();
   addPostForm.reset();
   addPostValidation.toggleSubmitButton();
 }
@@ -117,5 +124,3 @@ function handleCreatePost(event) {
 // set event listeners
 addPostButton.addEventListener("click", handleAddPost);
 editProfileButton.addEventListener("click", handleEditProfile);
-
-export { imagePopup };

@@ -1,10 +1,9 @@
-import { imagePopup } from "./script.js";
-
 export default class Card {
-  constructor(data, templateSelector) {
+  constructor(data, templateSelector, handleCardClick) {
     this._name = data.name;
     this._link = data.link;
     this.templateSelector = templateSelector;
+    this._handleCardClick = handleCardClick; 
   }
 
   _getTemplate() {
@@ -32,7 +31,7 @@ export default class Card {
     deleteButton.addEventListener("click", this._handleDelete);
 
     const image = this._post.querySelector(".post__image");
-    image.addEventListener("click", this._handleFocusImage);
+    image.addEventListener("click", this._handleCardClick);
 
     const likeButton = this._post.querySelector(".post__caption-like");
     likeButton.addEventListener("click", this._handleLike);
@@ -45,9 +44,5 @@ export default class Card {
 
   _handleLike = (event) => {
     event.target.classList.toggle("post__caption-like_active");
-  };
-
-  _handleFocusImage = (event) => {
-    imagePopup.open();
   };
 }

@@ -124,3 +124,19 @@ function handleCreatePost(event) {
 // set event listeners
 addPostButton.addEventListener("click", handleAddPost);
 editProfileButton.addEventListener("click", handleEditProfile);
+
+// load stylesheets
+import '../pages/index.css';
+
+// load images 
+import logoImageFile from '../images/logo.svg'; 
+const logoImageElement = document.querySelector('#logo-image');
+logoImageElement.src = logoImageFile;
+
+import avatarImageFile from '../images/avatar.jpg';
+const avatarImageElement = document.querySelector('#avatar-image');
+avatarImageElement.src = avatarImageFile; 
+
+import initialPopupImageFile from '../images/latemar.jpg';
+const initialPopupImageElement = document.querySelector('#initial-popup-image');
+initialPopupImageElement.src = initialPopupImageFile; 

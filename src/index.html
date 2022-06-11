@@ -5,17 +5,16 @@
     <meta name="viewport" content="width=device-width initial-scale=1" />
     <meta name="auuthor" content="Julia Hartsek" />
     <title>Around The U.S.</title>
-    <link href="./pages/index.css" rel="stylesheet" />
   </head>
   <body class="page">
     <header class="header">
-      <img src="./images/logo.svg" class="logo" alt="Around The U.S logo" />
+      <img id="logo-image" class="logo" alt="Around The U.S logo" />
     </header>
     <main>
       <section class="profile">
         <div class="profile__avatar"> 
           <img
-          src="./images/avatar.jpg"
+          id="avatar-image"
           class="profile__avatar-image"
           alt="Jacques Cousteau profile picture"
         />
@@ -114,7 +113,7 @@
           <button id="close-image-button" type="button" class="popup__close-button" aria-label="close-popup"> </button>
           <figure class="popup__content"> 
             <img 
-              src="https://code.s3.yandex.net/web-code/yosemite.jpg"
+              id="initial-popup-image"
               class="popup__image"
               alt="yosemite"
             /> 
@@ -122,18 +121,9 @@
           </figure>
         </div>
       </section>
-
     </main>
     <footer class="footer">
       <p class="footer__text"> © 2021 Around The U.S.</p>
     </footer>
-    <script type="module" src="./scripts/script.js"> </script>
-    <script type="module" src="./scripts/Card.js"> </script>
-    <script type="module" src="./scripts/FormValidator.js"> </script>
-    <script type="module" src="./scripts/Popup.js"> </script>
-    <script type="module" src="./scripts/Section.js"> </script>
-    <script type="module" src="./scripts/PopupWithImage.js"> </script>
-    <script type="module" src="./scripts/PopupWithFormClass.js"> </script>
-    <script type="module" src="./scripts/UserInfo.js"> </script>
   </body>
 </html>

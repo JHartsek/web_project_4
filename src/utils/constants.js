@@ -1,11 +1,11 @@
 const editProfileButton = document.querySelector(".profile__info-edit-button");
 const editProfileForm = document.querySelector(".profile-edit-form");
 
+const nameField = document.querySelector('#name');
+const aboutField = document.querySelector('#about-me');
+
 const addPostButton = document.querySelector(".profile__add-button");
 const addPostForm = document.querySelector(".add-post-form");
-
-const titleField = document.querySelector("#title");
-const linkField = document.querySelector("#link");
 
 const initialCards = [
     {
@@ -49,5 +49,5 @@ const avatarImageElement = document.querySelector('#avatar-image');
 
 const initialPopupImageElement = document.querySelector('#initial-popup-image');
 
-export { editProfileButton, editProfileForm, addPostButton, addPostForm, titleField, linkField, initialCards, 
-        classes, logoImageElement, avatarImageElement, initialPopupImageElement}
+export { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, initialCards, classes, 
+  logoImageElement, avatarImageElement, initialPopupImageElement}

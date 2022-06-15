@@ -13,8 +13,8 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import userInfo from "../components/UserInfo.js";
 
-import { editProfileButton, editProfileForm, addPostButton, addPostForm, titleField, linkField, initialCards, 
-  classes, logoImageElement, avatarImageElement, initialPopupImageElement} from '../utils/constants.js'; 
+import { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, initialCards, classes, 
+  logoImageElement, avatarImageElement, initialPopupImageElement} from '../utils/constants.js'; 
 
 
 // load initial cards
@@ -63,21 +63,18 @@ const user = new userInfo ({
 
 function setInitalFormFields() {
   const currentUserInfo = user.getUserInfo();
-  const nameField = document.querySelector('#name');
   nameField.value = currentUserInfo.name;
-  const aboutField = document.querySelector('#about-me');
   aboutField.value = currentUserInfo.about; 
 }
 
 function handleEditProfile () {
   editProfilePopup.open();
   setInitalFormFields();
-  editProfileValidation.toggleSubmitButton();
 }
 
 function handleSaveProfileChanges(event) {
   event.preventDefault();
-  const userFormData = editProfilePopup._getInputValues();
+  const userFormData = editProfilePopup.getInputValues();
   user.setUserInfo(userFormData.name, userFormData['about-me']);
   editProfilePopup.close(); 
 }
@@ -90,11 +87,10 @@ function handleAddPost() {
 
 function handleCreatePost(event) {
   event.preventDefault();
-  const postFormData = addPostPopup._getInputValues();
+  const postFormData = addPostPopup.getInputValues();
   const element = createCard(postFormData);
   cardSection.addItem(element);
   addPostPopup.close();
-  addPostValidation.toggleSubmitButton();
 }
 
 // set event listeners

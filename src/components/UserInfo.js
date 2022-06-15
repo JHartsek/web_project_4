@@ -2,7 +2,6 @@ export default class userInfo {
     constructor({ nameElementSelector, aboutElementSelector}) {
         this._profileNameElement = document.querySelector(nameElementSelector);
         this._profileAboutMeElement = document.querySelector(aboutElementSelector);
-        this._form = document.querySelector('.profile-edit-form');
     }
 
     getUserInfo () {

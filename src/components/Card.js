@@ -1,6 +1,6 @@
 export default class Card {
   constructor(data, templateSelector, handleCardClick) {
-    this._title = data.title;
+    this._name = data.name;
     this._link = data.link;
     this.templateSelector = templateSelector;
     this._handleCardClick = handleCardClick; 
@@ -17,11 +17,11 @@ export default class Card {
     this._post = this._getTemplate();
     this._postImageElement = this._post.querySelector(".post__image");
     this._postImageElement.setAttribute("src", this._link);
-    this._postImageElement.setAttribute("alt", this._title);
+    this._postImageElement.setAttribute("alt", this._name);
     this._postCaptionTextElement = this._post.querySelector(
       ".post__caption-text"
     );
-    this._postCaptionTextElement.textContent = this._title;
+    this._postCaptionTextElement.textContent = this._name;
     this._setEventListeners();
     return this._post;
   }
@@ -32,7 +32,7 @@ export default class Card {
 
     this._image = this._post.querySelector(".post__image");
     this._image.addEventListener("click", () => {
-      this._handleCardClick(this._title, this._link);
+      this._handleCardClick(this._name, this._link);
     })
 
     this._likeButton = this._post.querySelector(".post__caption-like__button");

@@ -3,8 +3,7 @@ import '../pages/index.css';
 
 // load images 
 import logoImageFile from '../images/logo.svg'; 
-import avatarImageFile from '../images/avatar.jpg';
-import initialPopupImageFile from '../images/latemar.jpg';
+import initialPopupImageFile from '../images/logo.svg';
 
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
@@ -12,34 +11,55 @@ import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import userInfo from "../components/UserInfo.js";
+import Api from "../components/Api.js"; 
 
 import { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, initialCards, classes, 
   logoImageElement, avatarImageElement, initialPopupImageElement} from '../utils/constants.js'; 
+
+
+// load initail user info 
+const apiData = {url: 'https://around.nomoreparties.co/v1/group-12', 
+authorization: '382934e9-5d13-46b8-8892-13e8f13d57ff'}
+const api = new Api(apiData);
+api.loadUserInfo()
+  .then((res) => {
+    user.setUserInfo(res.name, res.about);
+    avatarImageElement.src = res.avatar;
+  })
+
+const user = new userInfo ({
+  nameElementSelector: '.profile__info-name', 
+  aboutElementSelector: '.profile__info-descriptor'});
 
 
 // load initial cards
 const imagePopup = new PopupWithImage("#focus-image-popup");
 imagePopup.setEventListeners();
 
-function createCard (data) {
-  const card = new Card(data, ".template__post", (name, link) => {
-    imagePopup.open(name, link);
-  })
-  const cardElement = card.createPost();
-  return cardElement;
-}
+api.getInitialCards()
+  .then((res) => {
+    console.log(res)
+    function createCard (data) {
+      const card = new Card(data, ".template__post", (name, link) => {
+        imagePopup.open(name, link);
+      })
+      const cardElement = card.createPost();
+      return cardElement;
+    }
 
-const cardSection = new Section(
-  {
-    items: initialCards,
-    renderer: (data) => {
-      const element = createCard(data);
-      cardSection.addItem(element);
-    },
-  },
-  ".posts-grid"
-);
-cardSection.renderElements();
+    const cardSection = new Section(
+      {
+        items: res,
+        renderer: (data) => {
+          const element = createCard(data);
+          cardSection.addItem(element);
+        },
+      },
+      ".posts-grid"
+    );
+    cardSection.renderElements();
+
+  })
 
 
 // vaidate forms
@@ -57,10 +77,6 @@ addPostPopup.setEventListeners();
 
 
 // edit profile
-const user = new userInfo ({
-  nameElementSelector: '.profile__info-name', 
-  aboutElementSelector: '.profile__info-descriptor'});
-
 function setInitalFormFields() {
   const currentUserInfo = user.getUserInfo();
   nameField.value = currentUserInfo.name;
@@ -106,5 +122,5 @@ editProfileButton.addEventListener("click", () => {
 
 //set images
 logoImageElement.src = logoImageFile;
-avatarImageElement.src = avatarImageFile; 
+
 initialPopupImageElement.src = initialPopupImageFile; 

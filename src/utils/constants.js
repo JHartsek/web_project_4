@@ -7,33 +7,6 @@ const aboutField = document.querySelector('#about-me');
 const addPostButton = document.querySelector(".profile__add-button");
 const addPostForm = document.querySelector(".add-post-form");
 
-const initialCards = [
-    {
-      title: "Lago di Braies",
-      link: "https://code.s3.yandex.net/web-code/lago.jpg",
-    },
-    {
-      title: "Vanoise National Park",
-      link: "https://code.s3.yandex.net/web-code/vanoise.jpg",
-    },
-    {
-      title: "Latemar",
-      link: "https://code.s3.yandex.net/web-code/latemar.jpg",
-    },
-    {
-      title: "Bald Mountains",
-      link: "https://code.s3.yandex.net/web-code/bald-mountains.jpg",
-    },
-    {
-      title: "Lake Louise",
-      link: "https://code.s3.yandex.net/web-code/lake-louise.jpg",
-    },
-    {
-      title: "Yosemite Valley",
-      link: "https://code.s3.yandex.net/web-code/yosemite.jpg",
-    },
-];
-
 const classes = {
     formSelector: ".form",
     inputSelector: ".form__input",
@@ -49,5 +22,5 @@ const avatarImageElement = document.querySelector('#avatar-image');
 
 const initialPopupImageElement = document.querySelector('#initial-popup-image');
 
-export { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, initialCards, classes, 
+export { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, classes, 
   logoImageElement, avatarImageElement, initialPopupImageElement}

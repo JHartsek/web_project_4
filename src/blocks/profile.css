@@ -50,8 +50,8 @@
 }
 
 .profile__avatar-image {
-    height: 120px;
-    width: 120px;
+    height: 130px;
+    width: auto;
 }
 
 .profile__avatar-image_hover{

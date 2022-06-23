@@ -12,6 +12,7 @@
     </header>
     <main>
       <section class="profile">
+        <button class="profile__update-avatar-button" type="button" aria-label="update-profile-picture"> </button>
         <div class="profile__avatar"> 
           <img
           id="avatar-image"
@@ -59,6 +60,25 @@
         </div> 
       </section>
 
+      <section id="update-avatar-form" class="popup"> 
+        <div class="popup__container"> 
+          <button id="close-image-button" type="button" class="popup__close-button" aria-label="close-popup"> </button>
+          <form class="update-avatar-form form" name="update-avatar-form"> 
+            <h2 class="form__title"> Change profile picture </h2>
+            <input 
+            id="link-avatar"
+            name="link-avatar"
+            class="form__input"
+            type="url"
+            placeholder="Image link"
+            required
+            > 
+            <span class="form__input-error link-avatar-input-error"> </span>
+            <button id="save-avatar-button" type="submit" class="form__save-button"> Save </button>
+          </form>
+        </div>
+      </section>
+
       <section id="add-post-popup" class="popup">
         <div class="popup__container"> 
           <button id="close-add-button" type="button" class="popup__close-button" aria-label="close-popup"> </button>
@@ -90,6 +110,15 @@
         </div> 
       </section>
 
+      <section id="confirm-delete-popup" class="popup"> 
+        <div class="popup__container"> 
+          <button id="close-image-button" type="button" class="popup__close-button" aria-label="close-popup"> </button>
+          <form class="confirm-delete-form form" name="delete-confirmation-form"> 
+            <h2 class="form__title form__title-delete"> Are you sure? </h2>
+            <button id="confirm-delete-button" type="submit" class="form__save-button"> Yes </button>
+        </div>
+      </section>
+
       <section class="posts-grid">
         <template class="template__post"> 
           <article class="posts-grid__post post">
@@ -103,7 +132,10 @@
             </div>
             <div class="post__caption">
               <h3 class="post__caption-text"> </h3>
-              <button type="button" class="post__caption-like" aria-label="like-post"> </button>
+              <div class="post__caption-interactions"> 
+                <button type="button" class="post__caption-like__button" aria-label="like-post"> </button>
+                <p class="post__caption-likes"> 0 </p>
+              </div>
             </div>
           </article>
         </template>

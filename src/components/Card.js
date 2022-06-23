@@ -35,7 +35,7 @@ export default class Card {
       this._handleCardClick(this._title, this._link);
     })
 
-    this._likeButton = this._post.querySelector(".post__caption-like");
+    this._likeButton = this._post.querySelector(".post__caption-like__button");
     this._likeButton.addEventListener("click", this._handleLike);
   }
 
@@ -45,6 +45,6 @@ export default class Card {
   };
 
   _handleLike = (event) => {
-    event.target.classList.toggle("post__caption-like_active");
+    event.target.classList.toggle("post__caption-like__button_active");
   };
 }

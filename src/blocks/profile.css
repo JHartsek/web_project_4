@@ -54,6 +54,42 @@
     width: 120px;
 }
 
+.profile__avatar-image_hover{
+    opacity: 0.2;
+}
+
+.profile__update-avatar-button {
+    position: absolute;
+    visibility: hidden;
+    left: calc((100vw - 880px)/2 + 50px);
+    background-image: url('../images/update-profile-picture.svg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 26px;
+    height: 26px;
+    background-color: transparent;
+    border: none;
+    z-index: 5;
+}
+
+@media screen and (max-width: 900px) {
+    .profile__update-avatar-button {
+        left: auto;
+        top: 215px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .profile__update-avatar-button {
+        top: 180px
+    }
+}
+
+.profile__update-avatar-button_visible {
+    visibility: visible;
+}
+
 @media screen and (max-width: 900px) {
     .profile__avatar {
         margin-right: 0;

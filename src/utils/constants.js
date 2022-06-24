@@ -19,8 +19,10 @@ const classes = {
 const logoImageElement = document.querySelector('#logo-image');
 
 const avatarImageElement = document.querySelector('#avatar-image');
+const updateAvatarButton = document.querySelector('.profile__update-avatar-button');
+const updateAvatarForm = document.querySelector('.update-avatar-form');
 
 const initialPopupImageElement = document.querySelector('#initial-popup-image');
 
 export { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, classes, 
-  logoImageElement, avatarImageElement, initialPopupImageElement}
+  logoImageElement, avatarImageElement, updateAvatarButton, updateAvatarForm, initialPopupImageElement}

@@ -37,7 +37,7 @@ export default class Api {
     }
 
     editProfile(name, about) {
-        fetch(`${this._baseUrl}/users/me`, {
+        return fetch(`${this._baseUrl}/users/me`, {
             method: "PATCH",
             headers: {
                 authorization: this._authorization,
@@ -58,8 +58,29 @@ export default class Api {
         })
     }
 
+    updateAvatar(link) {
+        return fetch(`${this._baseUrl}/users/me/avatar`, {
+            method: "PATCH", 
+            headers: {
+                authorization: this._authorization,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                avatar: link,
+            })
+        })
+        .then((res) => {
+            if(res.ok) {
+                return Promise.resolve('Updated avatar saved to the server!')
+            }
+            else {
+                return Promise.reject(`Error: ${res.status}`);
+            }
+        })
+    }
+
     addPost(name, link) {
-        fetch(`${this._baseUrl}/cards`, {
+        return fetch(`${this._baseUrl}/cards`, {
             method: "POST",
             headers: {
                 authorization: this._authorization,

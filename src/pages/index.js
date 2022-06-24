@@ -13,8 +13,8 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import userInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js"; 
 
-import { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, initialCards, classes, 
-  logoImageElement, avatarImageElement, initialPopupImageElement} from '../utils/constants.js'; 
+import { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, classes, 
+  logoImageElement, avatarImageElement, updateAvatarButton, updateAvatarForm, initialPopupImageElement} from '../utils/constants.js'; 
 
 
 // load initail user info 
@@ -39,6 +39,9 @@ imagePopup.setEventListeners();
 function createCard (data) {
   const card = new Card(data, ".template__post", (name, link) => {
     imagePopup.open(name, link);
+  }, () => {
+    const confirmDeletePopup = new PopupWithForm("#confirm-delete-popup", handleDelete);
+    confirmDeletePopup.open();
   })
   const cardElement = card.createPost();
   return cardElement;
@@ -60,11 +63,19 @@ api.getInitialCards()
   })
 
 
+
+function handleDelete(evt) {
+  evt.preventDefault();
+  console.log(evt.target);
+}
+
 // vaidate forms
 const addPostValidation = new FormValidator(classes, addPostForm);
 addPostValidation.enableValidation();
 const editProfileValidation = new FormValidator(classes, editProfileForm);
 editProfileValidation.enableValidation();
+const updateAvatarValidation = new FormValidator(classes, updateAvatarForm);
+updateAvatarValidation.enableValidation();
 
 
 // create popup instances
@@ -72,6 +83,8 @@ const editProfilePopup = new PopupWithForm("#edit-profile-popup", handleSaveProf
 editProfilePopup.setEventListeners();
 const addPostPopup = new PopupWithForm("#add-post-popup", handleCreatePost);
 addPostPopup.setEventListeners();
+const updateAvatarPopup = new PopupWithForm("#update-avatar-popup", updateAvatar)
+updateAvatarPopup.setEventListeners();
 
 
 // edit profile
@@ -104,9 +117,23 @@ function handleCreatePost(event) {
   event.preventDefault();
   const postFormData = addPostPopup.getInputValues();
   const element = createCard(postFormData);
+  const cardSection = document.querySelector('.posts-grid');
   cardSection.addItem(element);
   api.addPost(postFormData.title, postFormData.link);
   addPostPopup.close();
+}
+
+
+// update avatar 
+function handleUpdateAvatar() {
+  updateAvatarPopup.open();
+}
+
+function updateAvatar(event) {
+  event.preventDefault();
+  const newAvatarLink = updateAvatarPopup.getInputValues()['link-avatar'];
+  avatarImageElement.src = newAvatarLink;
+  api.updateAvatar(newAvatarLink);
 }
 
 // set event listeners
@@ -118,6 +145,24 @@ editProfileButton.addEventListener("click", () => {
   editProfileValidation.resetValidation();
   handleEditProfile();
 });
+
+const avatarDiv = document.querySelector('.profile__avatar')
+
+avatarDiv.addEventListener("mouseover", () => {
+  avatarImageElement.classList.add('profile__avatar-image_hover');
+  updateAvatarButton.classList.add('profile__update-avatar-button_visible')
+
+})
+
+avatarDiv.addEventListener("mouseleave", () => {
+  avatarImageElement.classList.remove('profile__avatar-image_hover');
+  updateAvatarButton.classList.remove('profile__update-avatar-button_visible')
+})
+
+updateAvatarButton.addEventListener("click", () => {
+  updateAvatarValidation.resetValidation();
+  handleUpdateAvatar();
+})
 
 
 //set images

@@ -36,17 +36,16 @@ const user = new userInfo ({
 const imagePopup = new PopupWithImage("#focus-image-popup");
 imagePopup.setEventListeners();
 
+function createCard (data) {
+  const card = new Card(data, ".template__post", (name, link) => {
+    imagePopup.open(name, link);
+  })
+  const cardElement = card.createPost();
+  return cardElement;
+}
+
 api.getInitialCards()
   .then((res) => {
-    console.log(res)
-    function createCard (data) {
-      const card = new Card(data, ".template__post", (name, link) => {
-        imagePopup.open(name, link);
-      })
-      const cardElement = card.createPost();
-      return cardElement;
-    }
-
     const cardSection = new Section(
       {
         items: res,
@@ -58,7 +57,6 @@ api.getInitialCards()
       ".posts-grid"
     );
     cardSection.renderElements();
-
   })
 
 
@@ -92,6 +90,7 @@ function handleSaveProfileChanges(event) {
   event.preventDefault();
   const userFormData = editProfilePopup.getInputValues();
   user.setUserInfo(userFormData.name, userFormData['about-me']);
+  api.editProfile(userFormData.name, userFormData['about-me']);
   editProfilePopup.close(); 
 }
 
@@ -106,6 +105,7 @@ function handleCreatePost(event) {
   const postFormData = addPostPopup.getInputValues();
   const element = createCard(postFormData);
   cardSection.addItem(element);
+  api.addPost(postFormData.title, postFormData.link);
   addPostPopup.close();
 }
 
@@ -122,5 +122,4 @@ editProfileButton.addEventListener("click", () => {
 
 //set images
 logoImageElement.src = logoImageFile;
-
 initialPopupImageElement.src = initialPopupImageFile; 

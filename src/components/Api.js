@@ -35,4 +35,49 @@ export default class Api {
             }
         })
     }
+
+    editProfile(name, about) {
+        fetch(`${this._baseUrl}/users/me`, {
+            method: "PATCH",
+            headers: {
+                authorization: this._authorization,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                about: about,
+            })
+        })
+        .then((res) => {
+            if(res.ok) {
+                return Promise.resolve('Updated profile data saved to the server!');
+            }
+            else {
+                return Promise.reject(`Error: ${res.status}`);
+            }
+        })
+    }
+
+    addPost(name, link) {
+        fetch(`${this._baseUrl}/cards`, {
+            method: "POST",
+            headers: {
+                authorization: this._authorization,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name, 
+                link: link,
+            })
+        })
+        .then((res) => {
+            if(res.ok) {
+                console.log('All good')
+            }
+            else {
+                return Promise.reject(`Error: ${res.status}`);
+            }
+         }
+        )
+    }
 }

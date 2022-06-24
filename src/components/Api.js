@@ -93,7 +93,7 @@ export default class Api {
         })
         .then((res) => {
             if(res.ok) {
-                console.log('All good')
+                return Promise.resolve(`Post added!`)
             }
             else {
                 return Promise.reject(`Error: ${res.status}`);

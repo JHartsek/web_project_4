@@ -41,15 +41,18 @@ function createCard (data) {
     imagePopup.open(name, link);
   }, () => {
     const confirmDeletePopup = new PopupWithForm("#confirm-delete-popup", handleDelete);
+    confirmDeletePopup.setEventListeners();
     confirmDeletePopup.open();
   })
   const cardElement = card.createPost();
   return cardElement;
 }
 
+let cardSection = null;
+
 api.getInitialCards()
   .then((res) => {
-    const cardSection = new Section(
+    cardSection = new Section(
       {
         items: res,
         renderer: (data) => {
@@ -61,7 +64,6 @@ api.getInitialCards()
     );
     cardSection.renderElements();
   })
-
 
 
 function handleDelete(evt) {
@@ -85,6 +87,7 @@ const addPostPopup = new PopupWithForm("#add-post-popup", handleCreatePost);
 addPostPopup.setEventListeners();
 const updateAvatarPopup = new PopupWithForm("#update-avatar-popup", updateAvatar)
 updateAvatarPopup.setEventListeners();
+
 
 
 // edit profile
@@ -117,7 +120,6 @@ function handleCreatePost(event) {
   event.preventDefault();
   const postFormData = addPostPopup.getInputValues();
   const element = createCard(postFormData);
-  const cardSection = document.querySelector('.posts-grid');
   cardSection.addItem(element);
   api.addPost(postFormData.title, postFormData.link);
   addPostPopup.close();

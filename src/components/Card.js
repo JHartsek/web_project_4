@@ -1,11 +1,12 @@
 export default class Card {
-  constructor(data, templateSelector, handleCardClick, handleDelete) {
+  constructor(data, templateSelector, handleCardClick, handleDelete, handleLike) {
     this._name = data.name || data.title;
     this._link = data.link;
     this._likes = data.likes ? data.likes.length : 0;
     this.templateSelector = templateSelector;
     this._handleCardClick = handleCardClick; 
     this._handleDelete = handleDelete;
+    this._handleLike = handleLike;
   }
 
   _getTemplate() {
@@ -30,6 +31,10 @@ export default class Card {
     return this._post;
   }
 
+  updateLikes(newTotal) {
+    this._likesElement.textContent = newTotal;
+  }
+  
   _setEventListeners() {
     this._deleteButton = this._post.querySelector(".post__delete");
     this._deleteButton.addEventListener("click", () => {
@@ -44,8 +49,4 @@ export default class Card {
     this._likeButton = this._post.querySelector(".post__caption-like__button");
     this._likeButton.addEventListener("click", this._handleLike);
   }
-
-  _handleLike = (event) => {
-    event.target.classList.toggle("post__caption-like__button_active");
-  };
 }

@@ -43,10 +43,25 @@ function createCard (data) {
     const confirmDeletePopup = new PopupWithForm("#confirm-delete-popup", handleDelete);
     confirmDeletePopup.setEventListeners();
     confirmDeletePopup.open();
-  })
-  const cardElement = card.createPost();
-  return cardElement;
-}
+  },
+  (evt) => {
+    evt.target.classList.toggle("post__caption-like__button_active");
+    if(evt.target.classList.contains("post__caption-like__button_active")) {
+      api.addLike(data._id)
+      .then((res) => {
+        console.log(res);
+        card.updateLikes(res.likes.length);
+      })
+    }
+    else {
+      api.removeLike(data._id)
+      .then((res) => {
+        console.log(res);
+        card.updateLikes(res.likes.length)})
+      }})
+    const cardElement = card.createPost();
+    return cardElement; 
+  } 
 
 let cardSection = null;
 

@@ -102,6 +102,23 @@ export default class Api {
         )
     }
 
+    deletePost(cardId) {
+        return fetch(`${this._baseUrl}/cards/${cardId}`, {
+            method: "DELETE",
+            headers: {
+                authorization: this._authorization
+            }
+        })
+        .then((res) => {
+            if(res.ok) {
+                return Promise.resolve('Post deleted!')
+            }
+            else {
+                return Promise.reject(`Error: ${res.status}`);
+            }
+        })
+    }
+
     addLike(cardId) {
         return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
             method: "PUT",
@@ -135,3 +152,4 @@ export default class Api {
             }
     })
 }}
+

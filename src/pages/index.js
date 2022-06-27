@@ -14,8 +14,10 @@ import userInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js"; 
 
 import { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, classes, 
-  logoImageElement, avatarImageElement, updateAvatarButton, updateAvatarForm, initialPopupImageElement} from '../utils/constants.js'; 
+  logoImageElement, avatarImageElement, updateAvatarButton, updateAvatarForm, initialPopupImageElement} 
+  from '../utils/constants.js'; 
 
+let userId;  
 
 // load initail user info 
 const apiData = {url: 'https://around.nomoreparties.co/v1/group-12', 
@@ -25,6 +27,7 @@ api.loadUserInfo()
   .then((res) => {
     user.setUserInfo(res.name, res.about);
     avatarImageElement.src = res.avatar;
+    userId = res._id;
   })
 
 const user = new userInfo ({
@@ -36,11 +39,15 @@ const user = new userInfo ({
 const imagePopup = new PopupWithImage("#focus-image-popup");
 imagePopup.setEventListeners();
 
-function createCard (data) {
+function createCard (data, userId, ownerId) {
   const card = new Card(data, ".template__post", (name, link) => {
     imagePopup.open(name, link);
-  }, () => {
-    const confirmDeletePopup = new PopupWithForm("#confirm-delete-popup", handleDelete);
+  }, (id) => {
+    console.log(id);
+    const confirmDeletePopup = new PopupWithForm("#confirm-delete-popup", (evt) => {
+      evt.preventDefault();
+      api.deletePost(id); 
+    })
     confirmDeletePopup.setEventListeners();
     confirmDeletePopup.open();
   },
@@ -49,17 +56,15 @@ function createCard (data) {
     if(evt.target.classList.contains("post__caption-like__button_active")) {
       api.addLike(data._id)
       .then((res) => {
-        console.log(res);
         card.updateLikes(res.likes.length);
       })
     }
     else {
       api.removeLike(data._id)
       .then((res) => {
-        console.log(res);
         card.updateLikes(res.likes.length)})
       }})
-    const cardElement = card.createPost();
+    const cardElement = card.createPost(ownerId, userId);
     return cardElement; 
   } 
 
@@ -71,7 +76,7 @@ api.getInitialCards()
       {
         items: res,
         renderer: (data) => {
-          const element = createCard(data);
+          const element = createCard(data, userId, data._id);
           cardSection.addItem(element);
         },
       },
@@ -79,12 +84,6 @@ api.getInitialCards()
     );
     cardSection.renderElements();
   })
-
-
-function handleDelete(evt) {
-  evt.preventDefault();
-  console.log(evt.target);
-}
 
 // vaidate forms
 const addPostValidation = new FormValidator(classes, addPostForm);
@@ -102,7 +101,6 @@ const addPostPopup = new PopupWithForm("#add-post-popup", handleCreatePost);
 addPostPopup.setEventListeners();
 const updateAvatarPopup = new PopupWithForm("#update-avatar-popup", updateAvatar)
 updateAvatarPopup.setEventListeners();
-
 
 
 // edit profile
@@ -134,7 +132,7 @@ function handleAddPost() {
 function handleCreatePost(event) {
   event.preventDefault();
   const postFormData = addPostPopup.getInputValues();
-  const element = createCard(postFormData);
+  const element = createCard(postFormData, userId, userId);
   cardSection.addItem(element);
   api.addPost(postFormData.title, postFormData.link);
   addPostPopup.close();
@@ -185,3 +183,13 @@ updateAvatarButton.addEventListener("click", () => {
 //set images
 logoImageElement.src = logoImageFile;
 initialPopupImageElement.src = initialPopupImageFile; 
+
+api.getInitialCards()
+.then((res) => {
+  console.log(res);
+  res.forEach((card)=> {
+    if(card.owner._id === '5610cccaab8a4716cb0a4f80') {
+      api.deletePost(card._id)
+    }
+  })
+})

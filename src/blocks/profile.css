@@ -83,7 +83,7 @@
 
 @media screen and (max-width: 600px) {
     .profile__update-avatar-button {
-        top: 180px
+        top: 180px;
     }
 }
 

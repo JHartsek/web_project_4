@@ -14,8 +14,8 @@ import userInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js"; 
 
 import { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, classes, 
-  logoImageElement, avatarImageElement, updateAvatarButton, updateAvatarForm, initialPopupImageElement} 
-  from '../utils/constants.js'; 
+  logoImageElement, avatarImageElement, updateAvatarButton, updateAvatarForm, initialPopupImageElement, 
+  saveProfileButton, saveAvatarButton, createPostButton } from '../utils/constants.js'; 
 
 let userId;  
 
@@ -42,11 +42,12 @@ imagePopup.setEventListeners();
 function createCard (data, userId, ownerId) {
   const card = new Card(data, ".template__post", (name, link) => {
     imagePopup.open(name, link);
-  }, (id) => {
-    console.log(id);
+  }, () => {
     const confirmDeletePopup = new PopupWithForm("#confirm-delete-popup", (evt) => {
       evt.preventDefault();
-      api.deletePost(id); 
+      card.handleDelete();
+      api.deletePost(data._id)
+      .finally(confirmDeletePopup.close());
     })
     confirmDeletePopup.setEventListeners();
     confirmDeletePopup.open();
@@ -117,9 +118,13 @@ function handleEditProfile () {
 
 function handleSaveProfileChanges(event) {
   event.preventDefault();
+  renderSaving(true, saveProfileButton, "Save"); 
   const userFormData = editProfilePopup.getInputValues();
   user.setUserInfo(userFormData.name, userFormData['about-me']);
-  api.editProfile(userFormData.name, userFormData['about-me']);
+  api.editProfile(userFormData.name, userFormData['about-me'])
+    .finally(() => {
+      renderSaving(false, saveProfileButton, "Save");
+    })
   editProfilePopup.close(); 
 }
 
@@ -131,10 +136,16 @@ function handleAddPost() {
 
 function handleCreatePost(event) {
   event.preventDefault();
+  renderSaving(true, createPostButton, "Create");
   const postFormData = addPostPopup.getInputValues();
-  const element = createCard(postFormData, userId, userId);
-  cardSection.addItem(element);
-  api.addPost(postFormData.title, postFormData.link);
+  api.addPost(postFormData.title, postFormData.link)
+    .then((res) => {
+      const element = createCard(res, userId, userId);
+      cardSection.addItem(element);
+    })
+    .finally(() => {
+      renderSaving(false, createPostButton, "Create");
+    })
   addPostPopup.close();
 }
 
@@ -146,9 +157,14 @@ function handleUpdateAvatar() {
 
 function updateAvatar(event) {
   event.preventDefault();
+  renderSaving(true, saveAvatarButton, "Save")
   const newAvatarLink = updateAvatarPopup.getInputValues()['link-avatar'];
   avatarImageElement.src = newAvatarLink;
-  api.updateAvatar(newAvatarLink);
+  api.updateAvatar(newAvatarLink)
+  .finally(() => {
+    renderSaving(false, saveAvatarButton, "Save");
+    updateAvatarPopup.close();
+  });
 }
 
 // set event listeners
@@ -184,12 +200,12 @@ updateAvatarButton.addEventListener("click", () => {
 logoImageElement.src = logoImageFile;
 initialPopupImageElement.src = initialPopupImageFile; 
 
-api.getInitialCards()
-.then((res) => {
-  console.log(res);
-  res.forEach((card)=> {
-    if(card.owner._id === '5610cccaab8a4716cb0a4f80') {
-      api.deletePost(card._id)
-    }
-  })
-})
+// render saving screen 
+function renderSaving(isSaving, button, originalButtonText) {
+  if(isSaving) {
+    button.textContent = "Saving..."
+  }
+  else {
+    button.textContent = originalButtonText;
+  }
+}

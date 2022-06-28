@@ -55,4 +55,9 @@ export default class Card {
     this._likeButton = this._post.querySelector(".post__caption-like__button");
     this._likeButton.addEventListener("click", this._handleLike);
   }
+
+  handleDelete() {
+    this._post.remove();
+    this._post = null; 
+  }
 }

@@ -51,7 +51,8 @@
 
 .profile__avatar-image {
     height: 130px;
-    width: auto;
+    width: 130px;
+    object-fit: cover;
 }
 
 .profile__avatar-image_hover{

@@ -16,14 +16,16 @@ import Api from "../components/Api.js";
 import { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, classes, 
   logoImageElement, avatarImageElement, updateAvatarButton, updateAvatarForm, initialPopupImageElement, 
   saveProfileButton, saveAvatarButton, createPostButton } from '../utils/constants.js'; 
+import PopupWithConfirmation from '../components/PopupWithConfirmation';
 
-let userId;  
 
 // load initail user info 
+let userId; 
+
 const apiData = {url: 'https://around.nomoreparties.co/v1/group-12', 
 authorization: '382934e9-5d13-46b8-8892-13e8f13d57ff'}
 const api = new Api(apiData);
-api.loadUserInfo()
+const loadUserInfoPromise = api.loadUserInfo()
   .then((res) => {
     user.setUserInfo(res.name, res.about);
     avatarImageElement.src = res.avatar;
@@ -43,7 +45,7 @@ function createCard (data, userId, ownerId) {
   const card = new Card(data, ".template__post", (name, link) => {
     imagePopup.open(name, link);
   }, () => {
-    const confirmDeletePopup = new PopupWithForm("#confirm-delete-popup", (evt) => {
+    const confirmDeletePopup = new PopupWithConfirmation("#confirm-delete-popup", (evt) => {
       evt.preventDefault();
       card.handleDelete();
       api.deletePost(data._id)
@@ -71,7 +73,7 @@ function createCard (data, userId, ownerId) {
 
 let cardSection = null;
 
-api.getInitialCards()
+const getInitialCardsPromise = api.getInitialCards()
   .then((res) => {
     cardSection = new Section(
       {
@@ -85,6 +87,8 @@ api.getInitialCards()
     );
     cardSection.renderElements();
   })
+
+api.renderCards([loadUserInfoPromise, getInitialCardsPromise]);
 
 // vaidate forms
 const addPostValidation = new FormValidator(classes, addPostForm);
@@ -199,6 +203,7 @@ updateAvatarButton.addEventListener("click", () => {
 //set images
 logoImageElement.src = logoImageFile;
 initialPopupImageElement.src = initialPopupImageFile; 
+
 
 // render saving screen 
 function renderSaving(isSaving, button, originalButtonText) {

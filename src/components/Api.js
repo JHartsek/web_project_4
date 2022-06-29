@@ -155,5 +155,9 @@ export default class Api {
             }
     })
     }
+
+    renderCards() {
+        return Promise.all([this.loadUserInfo(), this.getInitialCards()]);
+    }
 }
 

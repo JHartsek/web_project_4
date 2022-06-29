@@ -25,16 +25,18 @@ let userId;
 const apiData = {url: 'https://around.nomoreparties.co/v1/group-12', 
 authorization: '382934e9-5d13-46b8-8892-13e8f13d57ff'}
 const api = new Api(apiData);
-const loadUserInfoPromise = api.loadUserInfo()
+api.loadUserInfo()
   .then((res) => {
     user.setUserInfo(res.name, res.about);
-    avatarImageElement.src = res.avatar;
+    user.setAvatar(res.avatar);
     userId = res._id;
   })
 
 const user = new UserInfo ({
   nameElementSelector: '.profile__info-name', 
-  aboutElementSelector: '.profile__info-descriptor'});
+  aboutElementSelector: '.profile__info-descriptor',
+  avatarImageSelector: '#avatar-image'
+  });
 
 
 // load initial cards
@@ -45,7 +47,9 @@ const confirmDeletePopup = new PopupWithConfirmation("#confirm-delete-popup", (e
   evt.preventDefault();
   card.handleDelete();
   api.deletePost(data._id)
-  .finally(confirmDeletePopup.close());
+  .then(() =>{
+    confirmDeletePopup.close();
+  })
 })
 confirmDeletePopup.setEventListeners(); 
 
@@ -77,11 +81,12 @@ function createCard (data, userId, ownerId) {
 
 let cardSection = null;
 
-const getInitialCardsPromise = api.getInitialCards()
+api.renderCards()
   .then((res) => {
+    const cards = res[1];
     cardSection = new Section(
       {
-        items: res,
+        items: cards,
         renderer: (data) => {
           const element = createCard(data, userId, data._id);
           cardSection.addItem(element);
@@ -129,10 +134,13 @@ function handleSaveProfileChanges(event) {
   const userFormData = editProfilePopup.getInputValues();
   user.setUserInfo(userFormData.name, userFormData['about-me']);
   api.editProfile(userFormData.name, userFormData['about-me'])
-    .finally(() => {
+    .then(() => {
       renderSaving(false, saveProfileButton, "Save");
     })
-  editProfilePopup.close(); 
+    .then(() => {
+      editProfilePopup.close(); 
+    })
+
 }
 
 
@@ -150,13 +158,15 @@ function handleCreatePost(event) {
       const element = createCard(res, userId, userId);
       cardSection.addItem(element);
     })
-    .finally(() => {
+    .then(() => {
       renderSaving(false, createPostButton, "Create");
+    })
+    .then(() => {
+      addPostPopup.close();
     })
     .catch((err) => {
       console.log(err);
   })
-  addPostPopup.close();
 }
 
 
@@ -169,10 +179,12 @@ function updateAvatar(event) {
   event.preventDefault();
   renderSaving(true, saveAvatarButton, "Save")
   const newAvatarLink = updateAvatarPopup.getInputValues()['link-avatar'];
-  avatarImageElement.src = newAvatarLink;
+  user.setAvatar(newAvatarLink);
   api.updateAvatar(newAvatarLink)
-  .finally(() => {
+  .then(() => {
     renderSaving(false, saveAvatarButton, "Save");
+  })
+  .then(() => {
     updateAvatarPopup.close();
   });
 }
@@ -222,7 +234,7 @@ function renderSaving(isSaving, button, originalButtonText) {
 }
 
 function clearMyCards () {
-  api.getInitialCards()
+  api.renderCards()
   .then((res) => {
     res.forEach((card) => {
       if (card.owner._id === userId) {

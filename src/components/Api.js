@@ -18,9 +18,6 @@ export default class Api {
                 return Promise.reject(`Error: ${res.status}`);
             }
         })
-        .catch((err) => {
-            console.log(err);
-        })
     }
 
     getInitialCards() {
@@ -62,9 +59,6 @@ export default class Api {
                 return Promise.reject(`Error: ${res.status}`);
             }
         })
-        .catch((err) => {
-            console.log(err);
-        })
     }
 
     updateAvatar(link) {
@@ -85,9 +79,6 @@ export default class Api {
             else {
                 return Promise.reject(`Error: ${res.status}`);
             }
-        })
-        .catch((err) => {
-            console.log(err);
         })
     }
 
@@ -112,9 +103,6 @@ export default class Api {
             }
          }
         )
-        .catch((err) => {
-            console.log(err);
-        })
     }
 
     deletePost(cardId) {
@@ -131,9 +119,6 @@ export default class Api {
             else {
                 return Promise.reject(`Error: ${res.status}`);
             }
-        })
-        .catch((err) => {
-            console.log(err);
         })
     }
 
@@ -152,9 +137,6 @@ export default class Api {
                 return Promise.reject(`Error: ${res.status}`);
             }
         })
-        .catch((err) => {
-            console.log(err);
-        })
     }
 
     removeLike(cardId) {
@@ -172,13 +154,6 @@ export default class Api {
                 return Promise.reject(`Error: ${res.status}`);
             }
     })
-    .catch((err) => {
-        console.log(err);
-    })
-    }
-
-    renderCards(promises) {
-        return Promise.all(promises);
     }
 }
 

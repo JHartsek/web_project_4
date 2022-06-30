@@ -10,7 +10,7 @@ import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
-import userInfo from "../components/UserInfo.js";
+import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js"; 
 
 import { editProfileButton, editProfileForm, nameField, aboutField, addPostButton, addPostForm, classes, 
@@ -25,47 +25,63 @@ let userId;
 const apiData = {url: 'https://around.nomoreparties.co/v1/group-12', 
 authorization: '382934e9-5d13-46b8-8892-13e8f13d57ff'}
 const api = new Api(apiData);
-const loadUserInfoPromise = api.loadUserInfo()
+api.loadUserInfo()
   .then((res) => {
     user.setUserInfo(res.name, res.about);
-    avatarImageElement.src = res.avatar;
+    user.setAvatar(res.avatar);
     userId = res._id;
   })
+  .catch(err => {
+    console.log(err)
+  })
 
-const user = new userInfo ({
+const user = new UserInfo ({
   nameElementSelector: '.profile__info-name', 
-  aboutElementSelector: '.profile__info-descriptor'});
+  aboutElementSelector: '.profile__info-descriptor',
+  avatarImageSelector: '#avatar-image'
+  });
 
 
 // load initial cards
 const imagePopup = new PopupWithImage("#focus-image-popup");
 imagePopup.setEventListeners();
 
+function handleDeleteCard(card) {
+  card.handleDelete();
+  api.deletePost(card._id)
+  .then(() =>{
+    confirmDeletePopup.close();
+  })
+  .catch(err => {
+    console.log(err);
+  })
+}
+
+const confirmDeletePopup = new PopupWithConfirmation("#confirm-delete-popup", handleDeleteCard)
+confirmDeletePopup.setEventListeners(); 
+
 function createCard (data, userId, ownerId) {
   const card = new Card(data, ".template__post", (name, link) => {
     imagePopup.open(name, link);
-  }, () => {
-    const confirmDeletePopup = new PopupWithConfirmation("#confirm-delete-popup", (evt) => {
-      evt.preventDefault();
-      card.handleDelete();
-      api.deletePost(data._id)
-      .finally(confirmDeletePopup.close());
-    })
-    confirmDeletePopup.setEventListeners();
-    confirmDeletePopup.open();
-  },
+  }, confirmDeletePopup,
   (evt) => {
     evt.target.classList.toggle("post__caption-like__button_active");
     if(evt.target.classList.contains("post__caption-like__button_active")) {
       api.addLike(data._id)
       .then((res) => {
-        card.updateLikes(res.likes.length);
+        return card.updateLikes(res.likes.length);
       })
+      .catch((err) => {
+        console.log(err);
+    })
     }
     else {
       api.removeLike(data._id)
       .then((res) => {
         card.updateLikes(res.likes.length)})
+      .catch(err => {
+        console.log(err);
+      })
       }})
     const cardElement = card.createPost(ownerId, userId);
     return cardElement; 
@@ -73,11 +89,12 @@ function createCard (data, userId, ownerId) {
 
 let cardSection = null;
 
-const getInitialCardsPromise = api.getInitialCards()
+api.renderCards()
   .then((res) => {
+    const cards = res[1];
     cardSection = new Section(
       {
-        items: res,
+        items: cards,
         renderer: (data) => {
           const element = createCard(data, userId, data._id);
           cardSection.addItem(element);
@@ -87,8 +104,10 @@ const getInitialCardsPromise = api.getInitialCards()
     );
     cardSection.renderElements();
   })
+  .catch(err => {
+    console.log(err);
+  })
 
-api.renderCards([loadUserInfoPromise, getInitialCardsPromise]);
 
 // vaidate forms
 const addPostValidation = new FormValidator(classes, addPostForm);
@@ -126,10 +145,15 @@ function handleSaveProfileChanges(event) {
   const userFormData = editProfilePopup.getInputValues();
   user.setUserInfo(userFormData.name, userFormData['about-me']);
   api.editProfile(userFormData.name, userFormData['about-me'])
-    .finally(() => {
+    .then(() => {
       renderSaving(false, saveProfileButton, "Save");
     })
-  editProfilePopup.close(); 
+    .then(() => {
+      editProfilePopup.close(); 
+    })
+    .catch(err => {
+      console.log(err);
+    })
 }
 
 
@@ -147,10 +171,15 @@ function handleCreatePost(event) {
       const element = createCard(res, userId, userId);
       cardSection.addItem(element);
     })
-    .finally(() => {
+    .then(() => {
       renderSaving(false, createPostButton, "Create");
     })
-  addPostPopup.close();
+    .then(() => {
+      addPostPopup.close();
+    })
+    .catch((err) => {
+      console.log(err);
+  })
 }
 
 
@@ -163,12 +192,17 @@ function updateAvatar(event) {
   event.preventDefault();
   renderSaving(true, saveAvatarButton, "Save")
   const newAvatarLink = updateAvatarPopup.getInputValues()['link-avatar'];
-  avatarImageElement.src = newAvatarLink;
+  user.setAvatar(newAvatarLink);
   api.updateAvatar(newAvatarLink)
-  .finally(() => {
+  .then(() => {
     renderSaving(false, saveAvatarButton, "Save");
+  })
+  .then(() => {
     updateAvatarPopup.close();
-  });
+  })
+  .catch(err => {
+    console.log(err);
+  })
 }
 
 // set event listeners
@@ -214,3 +248,5 @@ function renderSaving(isSaving, button, originalButtonText) {
     button.textContent = originalButtonText;
   }
 }
+
+

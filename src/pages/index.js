@@ -31,6 +31,9 @@ api.loadUserInfo()
     user.setAvatar(res.avatar);
     userId = res._id;
   })
+  .catch(err => {
+    console.log(err)
+  })
 
 const user = new UserInfo ({
   nameElementSelector: '.profile__info-name', 
@@ -43,22 +46,24 @@ const user = new UserInfo ({
 const imagePopup = new PopupWithImage("#focus-image-popup");
 imagePopup.setEventListeners();
 
-const confirmDeletePopup = new PopupWithConfirmation("#confirm-delete-popup", (evt) => {
-  evt.preventDefault();
+function handleDeleteCard(card) {
   card.handleDelete();
-  api.deletePost(data._id)
+  api.deletePost(card._id)
   .then(() =>{
     confirmDeletePopup.close();
   })
-})
+  .catch(err => {
+    console.log(err);
+  })
+}
+
+const confirmDeletePopup = new PopupWithConfirmation("#confirm-delete-popup", handleDeleteCard)
 confirmDeletePopup.setEventListeners(); 
 
 function createCard (data, userId, ownerId) {
   const card = new Card(data, ".template__post", (name, link) => {
     imagePopup.open(name, link);
-  }, () => {
-    confirmDeletePopup.open();
-  },
+  }, confirmDeletePopup,
   (evt) => {
     evt.target.classList.toggle("post__caption-like__button_active");
     if(evt.target.classList.contains("post__caption-like__button_active")) {
@@ -74,6 +79,9 @@ function createCard (data, userId, ownerId) {
       api.removeLike(data._id)
       .then((res) => {
         card.updateLikes(res.likes.length)})
+      .catch(err => {
+        console.log(err);
+      })
       }})
     const cardElement = card.createPost(ownerId, userId);
     return cardElement; 
@@ -95,6 +103,9 @@ api.renderCards()
       ".posts-grid"
     );
     cardSection.renderElements();
+  })
+  .catch(err => {
+    console.log(err);
   })
 
 
@@ -140,7 +151,9 @@ function handleSaveProfileChanges(event) {
     .then(() => {
       editProfilePopup.close(); 
     })
-
+    .catch(err => {
+      console.log(err);
+    })
 }
 
 
@@ -186,7 +199,10 @@ function updateAvatar(event) {
   })
   .then(() => {
     updateAvatarPopup.close();
-  });
+  })
+  .catch(err => {
+    console.log(err);
+  })
 }
 
 // set event listeners
@@ -233,13 +249,4 @@ function renderSaving(isSaving, button, originalButtonText) {
   }
 }
 
-function clearMyCards () {
-  api.renderCards()
-  .then((res) => {
-    res.forEach((card) => {
-      if (card.owner._id === userId) {
-        api.deletePost(card._id)
-      }
-    })
-  })
-}
+

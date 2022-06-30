@@ -160,25 +160,26 @@ updateAvatarPopup.setEventListeners();
 
 // edit profile
 function setInitalFormFields() {
-  const currentUserInfo = user.getUserInfo();
+  
   nameField.value = currentUserInfo.name;
   aboutField.value = currentUserInfo.about;
 }
 
 function handleEditProfile() {
   editProfilePopup.open();
-  setInitalFormFields();
+  const currentUserInfo = user.getUserInfo();
+  editProfilePopup.setInputValues(currentUserInfo);
 }
 
 function handleSaveProfileChanges(event) {
   event.preventDefault();
-  renderSaving(true, saveProfileButton, "Save");
+  editProfilePopup.renderSaving(true);
   const userFormData = editProfilePopup.getInputValues();
-  user.setUserInfo(userFormData.name, userFormData["about-me"]);
+  user.setUserInfo(userFormData.name, userFormData["about"]);
   api
-    .editProfile(userFormData.name, userFormData["about-me"])
+    .editProfile(userFormData.name, userFormData["about"])
     .then(() => {
-      renderSaving(false, saveProfileButton, "Save");
+      editProfilePopup.renderSaving(false);
     })
     .then(() => {
       editProfilePopup.close();
@@ -195,7 +196,7 @@ function handleAddPost() {
 
 function handleCreatePost(event) {
   event.preventDefault();
-  renderSaving(true, createPostButton, "Create");
+  addPostPopup.renderSaving(true);
   const postFormData = addPostPopup.getInputValues();
   api
     .addPost(postFormData.title, postFormData.link)
@@ -204,7 +205,7 @@ function handleCreatePost(event) {
       cardSection.addItem(element);
     })
     .then(() => {
-      renderSaving(false, createPostButton, "Create");
+      addPostPopup.renderSaving(false);
     })
     .then(() => {
       addPostPopup.close();
@@ -221,13 +222,13 @@ function handleUpdateAvatar() {
 
 function updateAvatar(event) {
   event.preventDefault();
-  renderSaving(true, saveAvatarButton, "Save");
+  updateAvatarPopup.renderSaving(true);
   const newAvatarLink = updateAvatarPopup.getInputValues()["link-avatar"];
   user.setAvatar(newAvatarLink);
   api
     .updateAvatar(newAvatarLink)
     .then(() => {
-      renderSaving(false, saveAvatarButton, "Save");
+      updateAvatarPopup.renderSaving(false);
     })
     .then(() => {
       updateAvatarPopup.close();
@@ -268,11 +269,3 @@ updateAvatarButton.addEventListener("click", () => {
 logoImageElement.src = logoImageFile;
 initialPopupImageElement.src = initialPopupImageFile;
 
-// render saving screen
-function renderSaving(isSaving, button, originalButtonText) {
-  if (isSaving) {
-    button.textContent = "Saving...";
-  } else {
-    button.textContent = originalButtonText;
-  }
-}

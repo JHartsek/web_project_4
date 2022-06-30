@@ -3,7 +3,7 @@ const editProfileForm = document.querySelector(".profile-edit-form");
 const saveProfileButton = document.querySelector("#save-profile-button"); 
 
 const nameField = document.querySelector('#name');
-const aboutField = document.querySelector('#about-me');
+const aboutField = document.querySelector('#about');
 
 const addPostButton = document.querySelector(".profile__add-button");
 const addPostForm = document.querySelector(".add-post-form");

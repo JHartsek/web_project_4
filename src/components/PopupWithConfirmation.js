@@ -19,8 +19,4 @@ export default class PopupWithConfirmation extends Popup {
       this._submitHandler(this._card);
     });
   }
-
-  close = () => {
-    super.close();
-  };
 }

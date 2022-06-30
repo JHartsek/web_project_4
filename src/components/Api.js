@@ -4,20 +4,17 @@ export default class Api {
         this._authorization = options.authorization; 
     }
     
+    _checkResponse (res) {
+        return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
+    }
+
     loadUserInfo() {
         return fetch(`${this._baseUrl}/users/me`, {
             headers: {
                 authorization: this._authorization
             }
         })
-        .then((res) => {
-            if(res.ok) { 
-                return res.json();
-            }
-            else {
-                return Promise.reject(`Error: ${res.status}`);
-            }
-        })
+        .then(this._checkResponse);
     }
 
     getInitialCards() {
@@ -26,14 +23,7 @@ export default class Api {
                 authorization: this._authorization
             }
         })
-        .then((res) => {
-            if(res.ok) {
-                return res.json();
-            }
-            else {
-                return Promise.reject(`Error: ${res.status}`);
-            }
-        })
+        .then(this._checkResponse);
     }
 
     editProfile(name, about) {
@@ -48,14 +38,7 @@ export default class Api {
                 about: about,
             })
         })
-        .then((res) => {
-            if(res.ok) {
-                return Promise.resolve('Updated profile data saved to the server!');
-            }
-            else {
-                return Promise.reject(`Error: ${res.status}`);
-            }
-        })
+        .then(this._checkResponse);
     }
 
     updateAvatar(link) {
@@ -69,14 +52,7 @@ export default class Api {
                 avatar: link,
             })
         })
-        .then((res) => {
-            if(res.ok) {
-                return Promise.resolve('Updated avatar saved to the server!')
-            }
-            else {
-                return Promise.reject(`Error: ${res.status}`);
-            }
-        })
+        .then(this._checkResponse);
     }
 
     addPost(name, link) {
@@ -91,15 +67,7 @@ export default class Api {
                 link: link,
             })
         })
-        .then((res) => {
-            if(res.ok) {
-                return res.json();
-            }
-            else {
-                return Promise.reject(`Error: ${res.status}`);
-            }
-         }
-        )
+        .then(this._checkResponse);
     }
 
     deletePost(cardId) {
@@ -109,14 +77,7 @@ export default class Api {
                 authorization: this._authorization
             }
         })
-        .then((res) => {
-            if(res.ok) {
-                return Promise.resolve('Post deleted!')
-            }
-            else {
-                return Promise.reject(`Error: ${res.status}`);
-            }
-        })
+        .then(this._checkResponse);
     }
 
     addLike(cardId) {
@@ -126,14 +87,7 @@ export default class Api {
                 authorization: this._authorization,
             }
         })
-        .then((res) => {
-            if(res.ok) {
-                return res.json();
-            }
-            else {
-                return Promise.reject(`Error: ${res.status}`);
-            }
-        })
+        .then(this._checkResponse);
     }
 
     removeLike(cardId) {
@@ -143,18 +97,10 @@ export default class Api {
                 authorization: this._authorization,
             }
         })
-        .then((res) => {
-            if(res.ok) {
-                return res.json();
-            }
-            else {
-                return Promise.reject(`Error: ${res.status}`);
-            }
-    })
+        .then(this._checkResponse);
     }
 
     renderCards() {
         return Promise.all([this.loadUserInfo(), this.getInitialCards()]);
     }
 }
-

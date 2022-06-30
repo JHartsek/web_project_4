@@ -100,7 +100,7 @@ export default class Api {
         .then(this._checkResponse);
     }
 
-    renderCards() {
+    getInitialData() {
         return Promise.all([this.loadUserInfo(), this.getInitialCards()]);
     }
 }

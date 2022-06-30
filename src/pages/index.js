@@ -89,7 +89,7 @@ function createCard (data, userId, ownerId) {
 
 let cardSection = null;
 
-api.renderCards()
+api.getInitialData()
   .then((res) => {
     const cards = res[1];
     cardSection = new Section(

@@ -26,6 +26,7 @@ export default class Card {
       ".post__caption-text"
     );
     this._postCaptionTextElement.textContent = this._name;
+    this._likeButton = this._post.querySelector(".post__caption-like__button");
     this._likesElement = this._post.querySelector('.post__caption-likes');
     this._likesElement.textContent = this._likes;
     this._deleteButton = this._post.querySelector(".post__delete");
@@ -47,12 +48,10 @@ export default class Card {
       })
     }
 
-    this._image = this._post.querySelector(".post__image");
-    this._image.addEventListener("click", () => {
+    this._postImageElement.addEventListener("click", () => {
       this._handleCardClick(this._name, this._link);
     })
 
-    this._likeButton = this._post.querySelector(".post__caption-like__button");
     this._likeButton.addEventListener("click", this._handleLike);
   }
 

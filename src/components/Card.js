@@ -1,5 +1,11 @@
 export default class Card {
-  constructor(data, templateSelector, handleCardClick, confirmDeletePopup, handleLike) {
+  constructor(
+    data,
+    templateSelector,
+    handleCardClick,
+    confirmDeletePopup,
+    handleLike
+  ) {
     this._name = data.name || data.title;
     this._link = data.link;
     this._id = data._id;
@@ -13,7 +19,9 @@ export default class Card {
   _getTemplate() {
     this._postTemplateElement = document.querySelector(this.templateSelector);
     this._postTemplate = this._postTemplateElement.content;
-    this._postElement = this._postTemplate.querySelector(".post").cloneNode(true);
+    this._postElement = this._postTemplate
+      .querySelector(".post")
+      .cloneNode(true);
     return this._postElement;
   }
 
@@ -27,11 +35,11 @@ export default class Card {
     );
     this._postCaptionTextElement.textContent = this._name;
     this._likeButton = this._post.querySelector(".post__caption-like__button");
-    this._likesElement = this._post.querySelector('.post__caption-likes');
+    this._likesElement = this._post.querySelector(".post__caption-likes");
     this._likesElement.textContent = this._likes;
     this._deleteButton = this._post.querySelector(".post__delete");
     if (ownerId !== userId) {
-      this._deleteButton.remove(); 
+      this._deleteButton.remove();
     }
     this._setEventListeners();
     return this._post;
@@ -42,21 +50,21 @@ export default class Card {
   }
 
   _setEventListeners() {
-    if(this._deleteButton) {
+    if (this._deleteButton) {
       this._deleteButton.addEventListener("click", () => {
-        this._confirmDeletePopup.open(this); 
-      })
+        this._confirmDeletePopup.open(this);
+      });
     }
 
     this._postImageElement.addEventListener("click", () => {
       this._handleCardClick(this._name, this._link);
-    })
+    });
 
     this._likeButton.addEventListener("click", this._handleLike);
   }
 
   handleDelete() {
     this._post.remove();
-    this._post = null; 
+    this._post = null;
   }
 }

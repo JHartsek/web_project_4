@@ -24,29 +24,18 @@ import {
 } from "../utils/constants.js";
 import PopupWithConfirmation from "../components/PopupWithConfirmation";
 
-// load initail user info
-let userId;
-
 const apiOptions = {
   baseUrl: "https://around.nomoreparties.co/v1/group-12",
   headers: {
     authorization: "382934e9-5d13-46b8-8892-13e8f13d57ff",
-    "Content-type": "application/json"
-  }
+    "Content-type": "application/json",
+  },
 };
 
 const api = new Api(apiOptions);
-api
-  .getInitialData()
-  .then((res) => {
-    const userData = res[0]
-    user.setUserInfo(userData.name, userData.about);
-    user.setAvatar(userData.avatar);
-    userId = userData._id;
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+
+// load initial user data
+let userId;
 
 const user = new UserInfo({
   nameElementSelector: ".profile__info-name",
@@ -84,7 +73,7 @@ function createCard(data, userId, ownerId) {
       imagePopup.open(name, link);
     },
     confirmDeletePopup,
-    api, 
+    api
   );
   const cardElement = card.createPost(ownerId, userId);
   return cardElement;
@@ -94,11 +83,16 @@ let cardSection = null;
 
 api
   .getInitialData()
-  .then((res) => {
-    const cards = res[1];
+  .then(([userData, initialCards]) => {
+    // load initial user info
+    user.setUserInfo(userData.name, userData.about);
+    user.setAvatar(userData.avatar);
+    userId = userData._id;
+
+    // load initial cards
     cardSection = new Section(
       {
-        items: cards,
+        items: initialCards,
         renderer: (data) => {
           const element = createCard(data, userId, data._id);
           cardSection.addItem(element);
@@ -113,16 +107,16 @@ api
   });
 
 // vaidate forms
-const formValidators = {}; 
+const formValidators = {};
 const enableValidation = (config) => {
   const formsList = Array.from(document.querySelectorAll(config.formSelector));
   formsList.forEach((formElement) => {
     const validator = new FormValidator(config, formElement);
-    const formName = formElement.getAttribute('name');
+    const formName = formElement.getAttribute("name");
     formValidators[formName] = validator;
     validator.enableValidation();
-  })
-}
+  });
+};
 enableValidation(classes);
 
 // create popup instances
@@ -217,11 +211,11 @@ function updateAvatar(event) {
 
 // set event listeners
 addPostButton.addEventListener("click", () => {
-  formValidators['add-post-form'].resetValidation();
+  formValidators["add-post-form"].resetValidation();
   handleAddPost();
 });
 editProfileButton.addEventListener("click", () => {
-  formValidators['profile-edit-form'].resetValidation();
+  formValidators["profile-edit-form"].resetValidation();
   handleEditProfile();
 });
 
@@ -238,7 +232,7 @@ avatarDiv.addEventListener("mouseleave", () => {
 });
 
 updateAvatarButton.addEventListener("click", () => {
-  formValidators['update-avatar-form'].resetValidation();
+  formValidators["update-avatar-form"].resetValidation();
   handleUpdateAvatar();
 });
 

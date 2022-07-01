@@ -4,7 +4,7 @@ export default class Card {
     templateSelector,
     handleCardClick,
     confirmDeletePopup,
-    handleLike
+    api, 
   ) {
     this._name = data.name || data.title;
     this._link = data.link;
@@ -13,7 +13,7 @@ export default class Card {
     this.templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._confirmDeletePopup = confirmDeletePopup;
-    this._handleLike = handleLike;
+    this._api = api; 
   }
 
   _getTemplate() {
@@ -45,7 +45,15 @@ export default class Card {
     return this._post;
   }
 
-  updateLikes(newTotal) {
+  _toggleLike() {
+    this._likeButton.classList.toggle("post__caption-like__button_active");
+  }
+
+  _toggleIsLiked() {
+    this._isLiked = this._likeButton.classList.contains("post__caption-like__button_active") ? true : false;
+  }
+
+  _updateLikes(newTotal) {
     this._likesElement.textContent = newTotal;
   }
 
@@ -60,11 +68,38 @@ export default class Card {
       this._handleCardClick(this._name, this._link);
     });
 
-    this._likeButton.addEventListener("click", this._handleLike);
+    this._likeButton.addEventListener("click", this.handleLike);
   }
 
   handleDelete() {
     this._post.remove();
     this._post = null;
+  }
+
+  handleLike = () => {
+    if (!this._isLiked) {
+      this._api
+        .addLike(this._id)
+        .then((res) => {
+          this._toggleLike();
+          this._toggleIsLiked();
+          return this._updateLikes(res.likes.length);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } 
+    else if(this._isLiked) {
+      this._api
+        .removeLike(this._id)
+        .then((res) => {
+          this._toggleLike();
+          this._toggleIsLiked();
+          this._updateLikes(res.likes.length);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 }

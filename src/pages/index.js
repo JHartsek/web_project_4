@@ -16,8 +16,6 @@ import Api from "../components/Api.js";
 import {
   editProfileButton,
   editProfileForm,
-  nameField,
-  aboutField,
   addPostButton,
   addPostForm,
   classes,
@@ -26,9 +24,6 @@ import {
   updateAvatarButton,
   updateAvatarForm,
   initialPopupImageElement,
-  saveProfileButton,
-  saveAvatarButton,
-  createPostButton,
 } from "../utils/constants.js";
 import PopupWithConfirmation from "../components/PopupWithConfirmation";
 
@@ -41,11 +36,12 @@ const apiData = {
 };
 const api = new Api(apiData);
 api
-  .loadUserInfo()
+  .getInitialData()
   .then((res) => {
-    user.setUserInfo(res.name, res.about);
-    user.setAvatar(res.avatar);
-    userId = res._id;
+    const userData = res[0]
+    user.setUserInfo(userData.name, userData.about);
+    user.setAvatar(userData.avatar);
+    userId = userData._id;
   })
   .catch((err) => {
     console.log(err);
@@ -62,11 +58,11 @@ const imagePopup = new PopupWithImage("#focus-image-popup");
 imagePopup.setEventListeners();
 
 function handleDeleteCard(card) {
-  card.handleDelete();
   api
     .deletePost(card._id)
     .then(() => {
       confirmDeletePopup.close();
+      card.handleDelete();
     })
     .catch((err) => {
       console.log(err);
@@ -87,28 +83,7 @@ function createCard(data, userId, ownerId) {
       imagePopup.open(name, link);
     },
     confirmDeletePopup,
-    (evt) => {
-      evt.target.classList.toggle("post__caption-like__button_active");
-      if (evt.target.classList.contains("post__caption-like__button_active")) {
-        api
-          .addLike(data._id)
-          .then((res) => {
-            return card.updateLikes(res.likes.length);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        api
-          .removeLike(data._id)
-          .then((res) => {
-            card.updateLikes(res.likes.length);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    }
+    api, 
   );
   const cardElement = card.createPost(ownerId, userId);
   return cardElement;
@@ -159,12 +134,6 @@ const updateAvatarPopup = new PopupWithForm(
 updateAvatarPopup.setEventListeners();
 
 // edit profile
-function setInitalFormFields() {
-  
-  nameField.value = currentUserInfo.name;
-  aboutField.value = currentUserInfo.about;
-}
-
 function handleEditProfile() {
   editProfilePopup.open();
   const currentUserInfo = user.getUserInfo();
@@ -175,14 +144,16 @@ function handleSaveProfileChanges(event) {
   event.preventDefault();
   editProfilePopup.renderSaving(true);
   const userFormData = editProfilePopup.getInputValues();
-  user.setUserInfo(userFormData.name, userFormData["about"]);
   api
     .editProfile(userFormData.name, userFormData["about"])
     .then(() => {
-      editProfilePopup.renderSaving(false);
+      user.setUserInfo(userFormData.name, userFormData["about"]);
     })
     .then(() => {
       editProfilePopup.close();
+    })
+    .finally(() => {
+      editProfilePopup.renderSaving(false);
     })
     .catch((err) => {
       console.log(err);
@@ -205,10 +176,10 @@ function handleCreatePost(event) {
       cardSection.addItem(element);
     })
     .then(() => {
-      addPostPopup.renderSaving(false);
-    })
-    .then(() => {
       addPostPopup.close();
+    })
+    .finally(() => {
+      addPostPopup.renderSaving(false);
     })
     .catch((err) => {
       console.log(err);
@@ -228,10 +199,10 @@ function updateAvatar(event) {
   api
     .updateAvatar(newAvatarLink)
     .then(() => {
-      updateAvatarPopup.renderSaving(false);
-    })
-    .then(() => {
       updateAvatarPopup.close();
+    })
+    .finally(() => {
+      updateAvatarPopup.renderSaving(false);
     })
     .catch((err) => {
       console.log(err);
@@ -268,4 +239,3 @@ updateAvatarButton.addEventListener("click", () => {
 //set images
 logoImageElement.src = logoImageFile;
 initialPopupImageElement.src = initialPopupImageFile;
-

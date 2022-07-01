@@ -30,11 +30,15 @@ import PopupWithConfirmation from "../components/PopupWithConfirmation";
 // load initail user info
 let userId;
 
-const apiData = {
-  url: "https://around.nomoreparties.co/v1/group-12",
-  authorization: "382934e9-5d13-46b8-8892-13e8f13d57ff",
+const apiOptions = {
+  baseUrl: "https://around.nomoreparties.co/v1/group-12",
+  headers: {
+    authorization: "382934e9-5d13-46b8-8892-13e8f13d57ff",
+    "Content-type": "application/json"
+  }
 };
-const api = new Api(apiData);
+
+const api = new Api(apiOptions);
 api
   .getInitialData()
   .then((res) => {

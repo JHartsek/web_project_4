@@ -15,14 +15,11 @@ import Api from "../components/Api.js";
 
 import {
   editProfileButton,
-  editProfileForm,
   addPostButton,
-  addPostForm,
   classes,
   logoImageElement,
   avatarImageElement,
   updateAvatarButton,
-  updateAvatarForm,
   initialPopupImageElement,
 } from "../utils/constants.js";
 import PopupWithConfirmation from "../components/PopupWithConfirmation";
@@ -116,12 +113,17 @@ api
   });
 
 // vaidate forms
-const addPostValidation = new FormValidator(classes, addPostForm);
-addPostValidation.enableValidation();
-const editProfileValidation = new FormValidator(classes, editProfileForm);
-editProfileValidation.enableValidation();
-const updateAvatarValidation = new FormValidator(classes, updateAvatarForm);
-updateAvatarValidation.enableValidation();
+const formValidators = {}; 
+const enableValidation = (config) => {
+  const formsList = Array.from(document.querySelectorAll(config.formSelector));
+  formsList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement);
+    const formName = formElement.getAttribute('name');
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  })
+}
+enableValidation(classes);
 
 // create popup instances
 const editProfilePopup = new PopupWithForm(
@@ -215,11 +217,11 @@ function updateAvatar(event) {
 
 // set event listeners
 addPostButton.addEventListener("click", () => {
-  addPostValidation.resetValidation();
+  formValidators['add-post-form'].resetValidation();
   handleAddPost();
 });
 editProfileButton.addEventListener("click", () => {
-  editProfileValidation.resetValidation();
+  formValidators['profile-edit-form'].resetValidation();
   handleEditProfile();
 });
 
@@ -236,7 +238,7 @@ avatarDiv.addEventListener("mouseleave", () => {
 });
 
 updateAvatarButton.addEventListener("click", () => {
-  updateAvatarValidation.resetValidation();
+  formValidators['update-avatar-form'].resetValidation();
   handleUpdateAvatar();
 });
 

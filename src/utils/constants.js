@@ -1,8 +1,6 @@
 const editProfileButton = document.querySelector(".profile__info-edit-button");
-const editProfileForm = document.querySelector(".profile-edit-form");
 
 const addPostButton = document.querySelector(".profile__add-button");
-const addPostForm = document.querySelector(".add-post-form");
 
 const classes = {
     formSelector: ".form",
@@ -17,9 +15,8 @@ const logoImageElement = document.querySelector('#logo-image');
 
 const avatarImageElement = document.querySelector('#avatar-image');
 const updateAvatarButton = document.querySelector('.profile__update-avatar-button');
-const updateAvatarForm = document.querySelector('.update-avatar-form');
 
 const initialPopupImageElement = document.querySelector('#initial-popup-image');
 
-export { editProfileButton, editProfileForm, addPostButton, addPostForm, classes, 
-  logoImageElement, avatarImageElement, updateAvatarButton, updateAvatarForm, initialPopupImageElement}
+export { editProfileButton, addPostButton, classes, logoImageElement, avatarImageElement, updateAvatarButton, 
+  initialPopupImageElement}

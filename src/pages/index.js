@@ -75,7 +75,7 @@ function createCard(data, userId, ownerId) {
     confirmDeletePopup,
     api
   );
-  const cardElement = card.createPost(ownerId, userId);
+  const cardElement = card.createPost(ownerId, sessionStorage.getItem('userId'));
   return cardElement;
 }
 
@@ -87,7 +87,9 @@ api
     // load initial user info
     user.setUserInfo(userData.name, userData.about);
     user.setAvatar(userData.avatar);
-    userId = userData._id;
+    sessionStorage.setItem('userId', userData._id);
+    userId = sessionStorage.getItem('userId');
+    console.log(userId);
 
     // load initial cards
     cardSection = new Section(
@@ -172,7 +174,7 @@ function handleCreatePost(event) {
   api
     .addPost(postFormData.title, postFormData.link)
     .then((res) => {
-      const element = createCard(res, userId, userId);
+      const element = createCard(res, sessionStorage.getItem('userId'), sessionStorage.getItem('userId'));
       cardSection.addItem(element);
     })
     .then(() => {

@@ -14,6 +14,7 @@ export default class Card {
     this._handleCardClick = handleCardClick;
     this._confirmDeletePopup = confirmDeletePopup;
     this._api = api; 
+    this._isLiked = false; 
   }
 
   _getTemplate() {

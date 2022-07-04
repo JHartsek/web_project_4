@@ -1,6 +1,7 @@
 export default class Card {
   constructor(
     data,
+    userId,
     templateSelector,
     handleCardClick,
     confirmDeletePopup,
@@ -9,12 +10,18 @@ export default class Card {
     this._name = data.name || data.title;
     this._link = data.link;
     this._id = data._id;
+    this._ownerId = data.owner['_id'];
+    this._userId = userId;
+    this._likesArray = [];
+    data.likes.forEach((like) => {
+      this._likesArray.push(like._id);
+    })
     this._likes = data.likes ? data.likes.length : 0;
+    this._isLiked = this._likesArray.includes(this._userId);
     this.templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._confirmDeletePopup = confirmDeletePopup;
     this._api = api; 
-    this._isLiked = false; 
   }
 
   _getTemplate() {
@@ -26,7 +33,7 @@ export default class Card {
     return this._postElement;
   }
 
-  createPost(userId, ownerId) {
+  createPost() {
     this._post = this._getTemplate();
     this._postImageElement = this._post.querySelector(".post__image");
     this._postImageElement.setAttribute("src", this._link);
@@ -36,10 +43,13 @@ export default class Card {
     );
     this._postCaptionTextElement.textContent = this._name;
     this._likeButton = this._post.querySelector(".post__caption-like__button");
+    if(!this._isLiked) {
+      this._likeButton.classList.remove('post__caption-like__button_active')
+    }
     this._likesElement = this._post.querySelector(".post__caption-likes");
     this._likesElement.textContent = this._likes;
     this._deleteButton = this._post.querySelector(".post__delete");
-    if (ownerId !== userId) {
+    if (this._ownerId !== this._userId) {
       this._deleteButton.remove();
     }
     this._setEventListeners();
@@ -47,11 +57,12 @@ export default class Card {
   }
 
   _toggleLike() {
-    this._likeButton.classList.toggle("post__caption-like__button_active");
-  }
-
-  _toggleIsLiked() {
-    this._isLiked = this._likeButton.classList.contains("post__caption-like__button_active") ? true : false;
+    if(this._isLiked) {
+      this._likeButton.classList.add('post__caption-like__button_active');
+    }
+    else {
+      this._likeButton.classList.remove('post__caption-like__button_active');
+    }
   }
 
   _updateLikes(newTotal) {
@@ -80,12 +91,16 @@ export default class Card {
   }
 
   handleLike = () => {
+    const likesArray = [];
     if (!this._isLiked) {
       this._api
         .addLike(this._id)
         .then((res) => {
+          res.likes.forEach((like) => {
+            likesArray.push(like._id);
+          })
+          this._isLiked = likesArray.includes(this._userId);
           this._toggleLike();
-          this._toggleIsLiked();
           return this._updateLikes(res.likes.length);
         })
         .catch((err) => {
@@ -96,8 +111,11 @@ export default class Card {
       this._api
         .removeLike(this._id)
         .then((res) => {
+          res.likes.forEach((like) => {
+            likesArray.push(like._id);
+          })
+          this._isLiked = likesArray.includes(this._userId);
           this._toggleLike();
-          this._toggleIsLiked();
           this._updateLikes(res.likes.length);
         })
         .catch((err) => {

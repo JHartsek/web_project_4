@@ -65,9 +65,10 @@ const confirmDeletePopup = new PopupWithConfirmation(
 );
 confirmDeletePopup.setEventListeners();
 
-function createCard(data, userId, ownerId) {
+function createCard(data, userId) {
   const card = new Card(
     data,
+    userId,
     ".template__post",
     (name, link) => {
       imagePopup.open(name, link);
@@ -75,7 +76,7 @@ function createCard(data, userId, ownerId) {
     confirmDeletePopup,
     api
   );
-  const cardElement = card.createPost(ownerId, sessionStorage.getItem('userId'));
+  const cardElement = card.createPost(userId);
   return cardElement;
 }
 
@@ -87,16 +88,14 @@ api
     // load initial user info
     user.setUserInfo(userData.name, userData.about);
     user.setAvatar(userData.avatar);
-    sessionStorage.setItem('userId', userData._id);
-    userId = sessionStorage.getItem('userId');
-    console.log(userId);
+    userId = userData._id;
 
     // load initial cards
     cardSection = new Section(
       {
         items: initialCards,
         renderer: (data) => {
-          const element = createCard(data, userId, data._id);
+          const element = createCard(data, userId);
           cardSection.addItem(element);
         },
       },
@@ -174,7 +173,7 @@ function handleCreatePost(event) {
   api
     .addPost(postFormData.title, postFormData.link)
     .then((res) => {
-      const element = createCard(res, sessionStorage.getItem('userId'), sessionStorage.getItem('userId'));
+      const element = createCard(res, userId);
       cardSection.addItem(element);
     })
     .then(() => {
